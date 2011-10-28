@@ -1,6 +1,6 @@
 <?php
   /**
-   * projectstaus  node class file
+   * eventsstaus  node class file
    *
    * @package achievo
    * @subpackage reports
@@ -11,7 +11,7 @@
    * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License 2
    *
    * @version $Revision: 4920 $
-   * $Id: class.projectstatus.inc 4920 2008-03-24 20:01:58Z sandy $
+   * $Id: class.eventsstatus.inc 4920 2008-03-24 20:01:58Z sandy $
    */
 
   /**
@@ -26,20 +26,20 @@
   include_once("achievotools.inc");
 
   /**
-   * The node class for project status
+   * The node class for events status
    *
    * @author ivo <ivo@ibuildings.nl>
    * @package achievo
    * @subpackage reports
    */
-  class projectstatus extends atkNode
+  class eventsstatus extends atkNode
   {
     /**
-     * projectstatus constructor
+     * eventsstatus constructor
      */
-    function projectstatus()
+    function eventsstatus()
     {
-      $this->atkNode("projectstatus");
+      $this->atkNode("eventsstatus");
     }
 
     function getFilterRecord()
@@ -83,7 +83,7 @@
     {
       useattrib("employee.myemployeesattribute");
 
-      $attrs["coordinator"] = &new myEmployeesAttribute("coordinator", "reports.projectstatus.any_user");
+      $attrs["coordinator"] = &new myEmployeesAttribute("coordinator", "reports.eventsstatus.any_user");
 
       $attrs["from"] = &new atkDateAttribute("from");
       $attrs["to"] = &new atkDateAttribute("to");
@@ -183,17 +183,17 @@
         }
 
         $rows = $db->getrows("SELECT
-                                p.name as project,
+                                p.name as events,
                                 ph.name as phase,
                                 ph.initial_planning,
                                 ph.current_planning,
                                 sum(h.time) as minutes
                               FROM
-                                project p,
+                                events p,
                                 phase ph
                               LEFT JOIN hours h ON (h.phaseid = ph.id)
                               WHERE
-                                p.id = ph.projectid
+                                p.id = ph.eventsid
                                 AND h.phaseid = ph.id
                                 AND 
                                 (
@@ -217,7 +217,7 @@
                               ORDER BY
                                 p.name, ph.name");
 
-         $data[] = array(atktext("project"), atktext("phase"), atktext("initial_planning"), atktext("current_planning"), atktext("booked"), atktext("diff_planning"));
+         $data[] = array(atktext("events"), atktext("phase"), atktext("initial_planning"), atktext("current_planning"), atktext("booked"), atktext("diff_planning"));
 
          $total_time = 0;
          $total_current = 0;
@@ -230,7 +230,7 @@
          {
            $line = array();
 
-           $name = $rows[$i]["project"];
+           $name = $rows[$i]["events"];
            if ($name!=$previousname)
            {
              $line[] = $name;

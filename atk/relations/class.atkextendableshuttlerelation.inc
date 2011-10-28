@@ -54,10 +54,10 @@ class atkExtendableShuttleRelation extends atkManyToManyRelation
    *                     intermediairy node. The intermediairy node is
    *                     assumed to have 2 attributes that are named
    *                     after the nodes at both ends of the relation.
-   *                     For example, if node 'project' has a M2M relation
+   *                     For example, if node 'events' has a M2M relation
    *                     with 'activity', then the intermediairy node
-   *                     'project_activity' is assumed to have an attribute
-   *                     named 'project' and one that is named 'activity'.
+   *                     'events_activity' is assumed to have an attribute
+   *                     named 'events' and one that is named 'activity'.
    *                     You can set your own keys by calling setLocalKey()
    *                     and setRemoteKey()
    * @param String $destination The full name of the node that is the other

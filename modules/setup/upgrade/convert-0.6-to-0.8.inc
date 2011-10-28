@@ -5,11 +5,11 @@
   $setup->addColumn("customer", "website", "varchar(100)");
   $setup->addColumn("customer", "currency", "varchar(10)");
   $setup->addColumn("contact", "cellular", "varchar(20)");
-  $setup->addColumn("project", "fixed_price", "decimal(13,5)");
-  $setup->addColumn("project", "enddate", "date");
-  $setup->alterColumn("project", "startdate", "startdate", "date");
-  $setup->alterColumn("project", "status", "status", "varchar(15)", false, "active");
-  $setup->addColumn("project", "contact", "int(10)");
+  $setup->addColumn("events", "fixed_price", "decimal(13,5)");
+  $setup->addColumn("events", "enddate", "date");
+  $setup->alterColumn("events", "startdate", "startdate", "date");
+  $setup->alterColumn("events", "status", "status", "varchar(15)", false, "active");
+  $setup->addColumn("events", "contact", "int(10)");
 
   $db->query("CREATE TABLE hours_lock (
                    week varchar(6) NOT NULL,
@@ -47,7 +47,7 @@
 
   $db->query("CREATE TABLE todo (
                    id int(10) unsigned NOT NULL,
-                   projectid int(10) unsigned NOT NULL,
+                   eventsid int(10) unsigned NOT NULL,
                    owner varchar(15) NOT NULL,
                    assigned_to varchar(15),
                    entrydate date NOT NULL,
@@ -59,9 +59,9 @@
                    PRIMARY KEY (id)
                 );");
 
-  $db->query("CREATE TABLE project_notes (
+  $db->query("CREATE TABLE events_notes (
                    id int(10) unsigned DEFAULT '0' NOT NULL,
-                   projectid int(10) unsigned DEFAULT '0' NOT NULL,
+                   eventsid int(10) unsigned DEFAULT '0' NOT NULL,
                    owner varchar(15) NOT NULL,
                    entrydate date DEFAULT '0000-00-00' NOT NULL,
                    description text,

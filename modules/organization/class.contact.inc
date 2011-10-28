@@ -2,7 +2,7 @@
 
 userelation("atkmanytoonerelation");
 atkimport("modules.person.person");
-useattrib("organization.contactprojectslist");
+useattrib("organization.contacteventsslist");
 useattrib("atkcreatedbyattribute");
 useattrib("atkCreateStampAttribute");
 useattrib("atkupdatedbyattribute");
@@ -23,8 +23,8 @@ class contact extends person
     $this->add(new atkAttribute("lng",AF_HIDE));
     $this->add(new atkManyToOneRelation("company","organization.organizationselector",AF_HIDE_ADD|AF_RELATION_AUTOLINK));
     $this->add(new atkAttribute("role"           , AF_OBLIGATORY|AF_READONLY|AF_HIDE, 15));
-    $this->add(new contactprojectslist("projects", "active", AF_HIDE_LIST|AF_HIDE_ADD));
-    $this->add(new contactprojectslist("archivedprojects", "archived", AF_HIDE_LIST|AF_HIDE_ADD));
+    $this->add(new contacteventsslist("eventss", "active", AF_HIDE_LIST|AF_HIDE_ADD));
+    $this->add(new contacteventsslist("archivedeventss", "archived", AF_HIDE_LIST|AF_HIDE_ADD));
 
     $this->add(new atkCreatedByAttribute("created_by",AF_HIDE_LIST),"history");
     $this->add(new atkCreateStampAttribute("created_on",AF_HIDE_LIST),"history");

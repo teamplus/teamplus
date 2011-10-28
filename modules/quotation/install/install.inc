@@ -2,7 +2,7 @@
 
   $setup->installNode("quotation.quotation");
   $setup->installNode("quotation.payment");
-  $setup->installNode("project.project");
+  $setup->installNode("events.events");
   $setup->setVersion(6);
 
 ?>

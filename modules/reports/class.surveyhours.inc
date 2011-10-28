@@ -21,8 +21,8 @@ class surveyhours extends hours
       }
     }
 
-    $projectAtt = &$this->getAttribute("projectid");
-    $projectAtt->removeFlag(AF_OBLIGATORY);
+    $eventsAtt = &$this->getAttribute("eventsid");
+    $eventsAtt->removeFlag(AF_OBLIGATORY);
     $this->setOrder("");
     $this->setSecurityAlias('timereg.hours');
   }
@@ -63,16 +63,16 @@ class surveyhours extends hours
   function phaseid_selection($record, $mode="")
   {
     $p_attr = &$this->getAttribute('phaseid');
-    if(atkArrayNvl($this->m_postvars, "subproject", 0) == 0)
+    if(atkArrayNvl($this->m_postvars, "subevents", 0) == 0)
     {
       return $p_attr->getSelectableRecords($record, $mode);
     }
-    elseif($record['projectid']['id']!='')
+    elseif($record['eventsid']['id']!='')
     {
-      $ids = $this->_getProjectAndSubProjectId($record['projectid']['id']);
+      $ids = $this->_getProjectAndSubProjectId($record['eventsid']['id']);
       $p_attr->createDestination();
 
-      $selector = "phase.projectid IN(".implode(",",$ids).")";
+      $selector = "phase.eventsid IN(".implode(",",$ids).")";
       $result = $p_attr->m_destInstance->selectDb($selector,"","","",atk_array_merge($p_attr->m_destInstance->descriptorFields(),$p_attr->m_destInstance->m_primaryKey),$mode);
       return $result;
     }
@@ -83,20 +83,20 @@ class surveyhours extends hours
   }
   
   /**
-   * Get IDs from project and his subprojects
+   * Get IDs from events and his subeventss
    *
-   * @param integer $projectid - master project id
-   * @return array with project and his subprojects
+   * @param integer $eventsid - master events id
+   * @return array with events and his subeventss
    */
-  function _getProjectAndSubProjectId($projectid)
+  function _getProjectAndSubProjectId($eventsid)
   {
     $id = array();
-  	if($projectid!='')
+  	if($eventsid!='')
   	{
-      $node = &atkGetNode("project.project");
-      $rows = $node->selectDb("project.master_project='$projectid'","","","",array("id"));
+      $node = &atkGetNode("events.events");
+      $rows = $node->selectDb("events.master_events='$eventsid'","","","",array("id"));
     
-      $id[] = $projectid;
+      $id[] = $eventsid;
     
       foreach ($rows as $row)
       {

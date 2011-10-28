@@ -13,7 +13,7 @@ class test_sql_whereclause_blacklist_checker extends atkTestCase
     $where_clauses = array(
       "News.id='1'",
       "contract.id='16'",
-      "project_person.projectid='1017' AND project_person.personid='366' AND project_person.role='1'",
+      "events_person.eventsid='1017' AND events_person.personid='366' AND events_person.role='1'",
       "(x.x=1) OR (y.y=2)",
       "(z.z='50' OR yada.yada='text') AND hours.time='70'",
       "hours.time=' -- '",

@@ -65,8 +65,8 @@
   /**
    * A N:1 relation between two classes.
    *
-   * For example, projects all have one coordinator, but one
-   * coordinator can have multiple projects. So in the project
+   * For example, eventss all have one coordinator, but one
+   * coordinator can have multiple eventss. So in the events
    * class, there's a ManyToOneRelation to a coordinator.
    *
    * This relation essentially creates a dropdown box, from which

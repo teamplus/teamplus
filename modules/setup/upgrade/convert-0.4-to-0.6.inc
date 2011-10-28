@@ -85,15 +85,15 @@
  
   $db->query("UPDATE employee SET password='".md5('default')."', theme='outlook', entity=1");
   
-  $setup->addColumn("project", "startdate", "date");
-  $setup->addColumn("project", "customer", "int(10)");
+  $setup->addColumn("events", "startdate", "date");
+  $setup->addColumn("events", "customer", "int(10)");
   
-  $db->query("UPDATE project SET startdate='".date("Y-m-d")."'");
+  $db->query("UPDATE events SET startdate='".date("Y-m-d")."'");
   
   $db->query("CREATE TABLE phase (
                    id int(10) unsigned NOT NULL,
                    name varchar(50) NOT NULL,
-                   projectid int(10) NOT NULL,
+                   eventsid int(10) NOT NULL,
                    status varchar(15) DEFAULT 'active' NOT NULL,
                    description text,
                    max_phasetime int(10),
@@ -108,31 +108,31 @@
                    PRIMARY KEY (phaseid, activityid)
                 )");                
   
-  // For each project, create a main phase
-  $projects = $db->getrows("SELECT id, status FROM project");
+  // For each events, create a main phase
+  $eventss = $db->getrows("SELECT id, status FROM events");
   $phaseidlookup = array();
   
-  for ($i=0, $_i=count($projects); $i<$_i; $i++)
+  for ($i=0, $_i=count($eventss); $i<$_i; $i++)
   {
     $id = $db->nextid("phase");
       
-    $db->query("INSERT INTO phase (id,name,projectid,status,description,max_phasetime,max_hours)
-                          VALUES ('$id','Main','".$projects[$i]["id"]."','".$projects[$i]["status"]."','Default phase',
+    $db->query("INSERT INTO phase (id,name,eventsid,status,description,max_phasetime,max_hours)
+                          VALUES ('$id','Main','".$eventss[$i]["id"]."','".$eventss[$i]["status"]."','Default phase',
                           0,0)");    
-    $phaseidlookup[$projects[$i]["id"]] = $id;
+    $phaseidlookup[$eventss[$i]["id"]] = $id;
   }
           
-  //Convert the projectactivitys to phase activities
-  $projact = $db->getrows("SELECT * FROM projectactivity");
+  //Convert the eventsactivitys to phase activities
+  $projact = $db->getrows("SELECT * FROM eventsactivity");
   
   for ($i=0, $_i=count($projact); $i<$_i; $i++)
   {
     $sql = "INSERT INTO phase_activity (phaseid,activityid)
-            VALUES ('".$phaseidlookup[$projact[$i]["projectid"]]."','".$projact[$i]["activityid"]."')";
+            VALUES ('".$phaseidlookup[$projact[$i]["eventsid"]]."','".$projact[$i]["activityid"]."')";
     $db->query($sql);     
   }
   
-  $setup->dropTable("projectactivity");
+  $setup->dropTable("eventsactivity");
   
   $setup->addColumn("hours", "time", "int(10)", false, 0);
   
@@ -147,15 +147,15 @@
   
   foreach ($phaseidlookup as $proj=>$phase)
   {
-    $db->query("UPDATE hours SET phaseid = '$phase' WHERE projectid='$proj'");
+    $db->query("UPDATE hours SET phaseid = '$phase' WHERE eventsid='$proj'");
   }
-  $setup->dropColumn("hours", "projectid");
+  $setup->dropColumn("hours", "eventsid");
     
   $db->query("CREATE TABLE tpl_dependency (
                    phaseid_row int(10) NOT NULL,
                    phaseid_col int(10) NOT NULL,
-                   projectid int(10) NOT NULL,
-                   PRIMARY KEY (phaseid_row, phaseid_col, projectid)
+                   eventsid int(10) NOT NULL,
+                   PRIMARY KEY (phaseid_row, phaseid_col, eventsid)
                 )");
 
   $db->query("CREATE TABLE tpl_phase (
@@ -171,17 +171,17 @@
                    PRIMARY KEY (phaseid, activityid)
                 )");
   
-  $db->query("CREATE TABLE tpl_project (
+  $db->query("CREATE TABLE tpl_events (
                    id int(10) unsigned NOT NULL,
                    name varchar(50) NOT NULL,
                    description text,
                    PRIMARY KEY (id)
                 )");
   
-  $db->query("CREATE TABLE tpl_project_phase (
-                   projectid int(10) NOT NULL,
+  $db->query("CREATE TABLE tpl_events_phase (
+                   eventsid int(10) NOT NULL,
                    phaseid int(10) NOT NULL,
-                   PRIMARY KEY (projectid, phaseid)
+                   PRIMARY KEY (eventsid, phaseid)
                 )");
   
   //Convert the templates, 
@@ -191,15 +191,15 @@
   
   for ($i=0, $_i=count($tpls); $i<$_i; $i++)
   {
-    $pid = $db->nextid("tpl_project");
-    $db->query("INSERT INTO tpl_project (id,name,description)
+    $pid = $db->nextid("tpl_events");
+    $db->query("INSERT INTO tpl_events (id,name,description)
                          VALUES ('$pid','".addslashes($tpls[$i]["name"])."','')");        
 
     $phid = $db->nextid("tpl_phase");
     $db->query("INSERT INTO tpl_phase (id,name,description)
            VALUES ('$phid','Main phase for ".addslashes($tpls[$i]["name"])."','Default phase')");
     
-    $db->query("INSERT INTO tpl_project_phase (projectid,phaseid)
+    $db->query("INSERT INTO tpl_events_phase (eventsid,phaseid)
                          VALUES ('$pid','$phid')");    
     $tplphaselookup[$tpls[$i]["id"]] = $phid;
   }
@@ -245,7 +245,7 @@
     }
   }
   
-  calcSequence("project", "id");
+  calcSequence("events", "id");
   calcSequence("activity", "id");   
   calcSequence("hours", "id");
 

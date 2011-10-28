@@ -107,7 +107,7 @@ prior art:
       such able minded individuals took the task to heart and 
       executed it with cunning and strength.  In addition to
       their various noteworthy contributions to YAML parsers
-      and related projects, YAML.pm's README is a treasure trove
+      and related eventss, YAML.pm's README is a treasure trove
       of information for knowledge seekers.  Thanks, guys.
       
   - who: why the lucky stiff
@@ -131,7 +131,7 @@ prior art:
     
 bugs:
   report: >
-    Please see Spyc's Sourceforge project page for information on reporting bugs.
+    Please see Spyc's Sourceforge events page for information on reporting bugs.
   speed: > 
     This implementation was not designed for speed.  Rather, it
     was designed for those who need a pure PHP implementation of
@@ -150,7 +150,7 @@ resources:
   - http://yaml.kwiki.org/?YamlInFiveMinutes
   - http://www.whytheluckystiff.net/syck/
   - http://yaml4r.sourceforge.net/cookbook/
-  - http://www.sourceforge.net/projects/spyc/
+  - http://www.sourceforge.net/eventss/spyc/
   - http://spyc.sourceforge.net/
 
 thanks:

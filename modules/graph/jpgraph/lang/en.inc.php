@@ -162,7 +162,7 @@ HTTP headers have already been sent.<br>Caused by output from file <b>%s</b> at 
 */
 
 14001 => array('Pie3D::ShowBorder() . Deprecated function. Use Pie3D::SetEdge() to control the edges around slices.',0),
-14002 => array('PiePlot3D::SetAngle() 3D Pie projection angle must be between 5 and 85 degrees.',0),
+14002 => array('PiePlot3D::SetAngle() 3D Pie eventsion angle must be between 5 and 85 degrees.',0),
 14003 => array('Internal assertion failed. Pie3D::Pie3DSlice',0),
 14004 => array('Slice start angle must be between 0 and 360 degrees.',0),
 14005 => array('Pie3D Internal error: Trying to wrap twice when looking for start index',0,),

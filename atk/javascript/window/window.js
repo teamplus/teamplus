@@ -1568,7 +1568,7 @@ var Dialog = {
   by Lokesh Dhakar - http://www.huddletogether.com
 
   For more information on this script, visit:
-  http://huddletogether.com/projects/lightbox/
+  http://huddletogether.com/eventss/lightbox/
 
   Licensed under the Creative Commons Attribution 2.5 License - http://creativecommons.org/licenses/by/2.5/
   (basically, do anything you want, just leave my name and link)

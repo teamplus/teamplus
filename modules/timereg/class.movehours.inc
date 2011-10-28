@@ -8,10 +8,10 @@
       // Use the normal hours node constructor
       $this->hours($name, $flags);
 
-      // Hide anything but the projectid, phaseid and activityid relations
+      // Hide anything but the eventsid, phaseid and activityid relations
       foreach(array_keys($this->m_attribList) as $attribname)
       {
-        if (!in_array($attribname, array("projectid", "phaseid", "activityid", "javascript")))
+        if (!in_array($attribname, array("eventsid", "phaseid", "activityid", "javascript")))
         {
           $this->m_attribList[$attribname]->addFlag(AF_HIDE);
           $this->m_attribList[$attribname]->removeFlag(AF_OBLIGATORY);

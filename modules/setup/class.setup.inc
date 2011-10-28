@@ -339,12 +339,12 @@
           // several Achievo versions.
           $orgversion = "";
 
-          if (in_array("projectactivity", $tablenames) && in_array("templateactivity", $tablenames))
+          if (in_array("eventsactivity", $tablenames) && in_array("templateactivity", $tablenames))
           {
             // If these two tables exist, this is a 0.4 database.
             $orgversion = "0.4";
           }
-          else if (in_array("todo_history", $tablenames) && in_array("employee_project", $tablenames))
+          else if (in_array("todo_history", $tablenames) && in_array("employee_events", $tablenames))
           {
             $orgversion = "0.9.1";
           }
@@ -358,7 +358,7 @@
             $orgversion = "0.8";
           }
           else if (!in_array("hours_lock", $tablenames) && !in_array("contract", $tablenames)
-                  && in_array("tpl_project", $tablenames))
+                  && in_array("tpl_events", $tablenames))
           {
             $orgversion = "0.6";
           }

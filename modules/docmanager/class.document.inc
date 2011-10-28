@@ -4,7 +4,7 @@
    * Detailed copyright and licensing information can be found
    * in the doc/COPYRIGHT and doc/LICENSE files which should be
    * included in the distribution.
-   * projecttpl_doctype node class file
+   * eventstpl_doctype node class file
    *
    * @package achievo
    * @subpackage docmanager
@@ -106,7 +106,7 @@
         return $documentnumbermodule->getInitialDocumentcode($doctypetemplate);
       }
 
-      atkdebug("Using default empty projectcode.");
+      atkdebug("Using default empty eventscode.");
       return "";
     }
 

@@ -110,7 +110,7 @@ class hourSurveyHandler extends atkAbstractSearchHandler
                     'orderdirection' => $this->m_postvars['orderdirection'],
                     'subtotal' => $this->m_postvars['subtotal'],
                     'outputType' => atkArrayNvl($this->m_postvars, "outputType", ""),
-                    'subProject' => atkArrayNvl($this->m_postvars, "subproject", 0),
+                    'subProject' => atkArrayNvl($this->m_postvars, "subevents", 0),
                     'all_users' => atkArrayNvl($this->m_postvars, "all_users",0),
                     'dynamic_dates' => atkArrayNvl($this->m_postvars, "dynamic_dates",0));
       
@@ -122,7 +122,7 @@ class hourSurveyHandler extends atkAbstractSearchHandler
 
       $record['department_name'] =    $sessionManager->pageVar("departmentid");
 
-      foreach (array('projectid','phaseid') as $fieldname)
+      foreach (array('eventsid','phaseid') as $fieldname)
       {
         $pair = explode("=",$sessionManager->pageVar($fieldname));
         $id =          stripQuotes($pair[1]);
@@ -138,16 +138,16 @@ class hourSurveyHandler extends atkAbstractSearchHandler
       $activity_id =        stripQuotes($activitypair[1]);
       $record['activity_id'] = $activity_id;
       
-      $categorypair =       explode("=",$sessionManager->pageVar("project_category"));
+      $categorypair =       explode("=",$sessionManager->pageVar("events_category"));
       $category =           stripQuotes($categorypair[1]);
       if(!isset($category)) $category = "";
       $record['category'] = $category;
 
       if (moduleExists("billing"))
       {
-        $billing_projecttypepair = $sessionManager->pageVar("billing_projecttypeid");
-        $billing_projecttypeid = (!empty($billing_projecttypepair)) ? atkArrayNvl(decodeKeyValuePair($billing_projecttypepair), "billing_projecttype.id", "") : "";
-        $record['billing_projecttypeid'] = $billing_projecttypeid;
+        $billing_eventstypepair = $sessionManager->pageVar("billing_eventstypeid");
+        $billing_eventstypeid = (!empty($billing_eventstypepair)) ? atkArrayNvl(decodeKeyValuePair($billing_eventstypepair), "billing_eventstype.id", "") : "";
+        $record['billing_eventstypeid'] = $billing_eventstypeid;
       }
 
       if (moduleExists('advancedsecurity'))

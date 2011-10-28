@@ -59,9 +59,9 @@
   // Also update the usercontract node.
   $setup->addColumn("usercontract", "workingdays", "varchar(14)");
   
-  // Create project_person table with all necessary fields.
-  $setup->installNode("project.project_personcontact");
-  $setup->installNode("project.project_personemployee");
+  // Create events_person table with all necessary fields.
+  $setup->installNode("events.events_personcontact");
+  $setup->installNode("events.events_personemployee");
  
   //set role = "contact" for all persons in person table
   //these persons are only contacts at this moment  
@@ -117,32 +117,32 @@
   // Update the organization node with new fields.
   $setup->addColumn("organization", "state", "varchar(100)");
 
-  $setup->installNode("project.role");  
+  $setup->installNode("events.role");  
 
   //insert roles in table role  
   $res = $db->query("INSERT INTO role (id, name) VALUES (1, 'Developer')");    
   $res = $db->query("INSERT INTO role (id, name) VALUES (2, 'Customer')");  
   $res = $db->query("INSERT INTO db_sequence (seq_name, nextid) VALUES ('role', 2)");  
 
-  //copy contact of a project into project_person
-  $sql = "SELECT project.* FROM project";
-  $projects = $db->getrows($sql);
+  //copy contact of a events into events_person
+  $sql = "SELECT events.* FROM events";
+  $eventss = $db->getrows($sql);
  
   $customer_defaultcontacts = array(); 
-  $contact_obligatory = atkconfig("project_contact_obligatory",false);
-  for ($i=0;$i<count($projects);$i++)
+  $contact_obligatory = atkconfig("events_contact_obligatory",false);
+  for ($i=0;$i<count($eventss);$i++)
   {  
-    if ($projects[$i]["contact"] != 0)
+    if ($eventss[$i]["contact"] != 0)
     {     
-      $db->query("INSERT INTO project_person (personid, projectid, role)
-                         VALUES ('".$projects[$i]["contact"]."', '".$projects[$i]["id"]."', 2)");      
+      $db->query("INSERT INTO events_person (personid, eventsid, role)
+                         VALUES ('".$eventss[$i]["contact"]."', '".$eventss[$i]["id"]."', 2)");      
     }
     else
     {    
-      if ($projects[$i]["customer"]!=0 && $contact_obligatory) // if customer is not set or contact is not obligatory, we don't need to convert
+      if ($eventss[$i]["customer"]!=0 && $contact_obligatory) // if customer is not set or contact is not obligatory, we don't need to convert
       {
-        // project has a customer, but a contact person was not set. Create a default contact person.        
-        if (empty($customer_defaultcontacts[$projects[$i]["customer"]])) // check if we already added a default contact for this customer.
+        // events has a customer, but a contact person was not set. Create a default contact person.        
+        if (empty($customer_defaultcontacts[$eventss[$i]["customer"]])) // check if we already added a default contact for this customer.
         {
         
           $id = $db->nextid("person");
@@ -154,12 +154,12 @@
                                     VALUES ('$id', 
                                             '(please update)',
                                             'Auto-generated default contact', 
-                                            '".$projects[$i]["customer"]."', 
+                                            '".$eventss[$i]["customer"]."', 
                                             'contact')");      
-          $customer_defaultcontacts[$projects[$i]["customer"]] = $id;          
+          $customer_defaultcontacts[$eventss[$i]["customer"]] = $id;          
         }
-        $db->query("INSERT INTO project_person (personid, projectid, role)
-                       VALUES ('".$customer_defaultcontacts[$projects[$i]["customer"]]."', '".$projects[$i]["id"]."', 2)");          
+        $db->query("INSERT INTO events_person (personid, eventsid, role)
+                       VALUES ('".$customer_defaultcontacts[$eventss[$i]["customer"]]."', '".$eventss[$i]["id"]."', 2)");          
       }      
     }
   }
@@ -169,12 +169,12 @@
   {  
     $setup->report("For ".$defaultcnt." customer".($defaultcnt>1?"s":"")." a 
                     new auto-generated contact person was added to be part of 
-                    projects that did not have a contactperson yet. ".($defaultcnt>1?"These 
+                    eventss that did not have a contactperson yet. ".($defaultcnt>1?"These 
                     contacts have":"This contact has")." been named 'Auto-generated default 
                     contact'. Please update this name to the correct value.", "important");
   }
 
-  $setup->dropColumn("project", "contact");
+  $setup->dropColumn("events", "contact");
   
   //add new fields to schedule table
   $setup->addColumn("schedule", "all_users", "int(1)");
@@ -189,8 +189,8 @@
 
   $setup->renameTable("schedule_types", "schedule_type");
     
-  // employee_project records will be converted to project_person
-  $sql = "SELECT employeeid FROM employee_project";
+  // employee_events records will be converted to events_person
+  $sql = "SELECT employeeid FROM employee_events";
   $res = $db->getrows($sql);
   if (count($res) > 0)
   {
@@ -198,26 +198,26 @@
     {
       //search employee id with given userid      
       $result = $db->getrows("SELECT id FROM person WHERE userid ='".$res[$i]["employeeid"]."' AND role='employee'");
-      $db->query("UPDATE employee_project SET employeeid='".$result[0]["id"]."' WHERE employeeid = '".$res[$i]["employeeid"]."'");
+      $db->query("UPDATE employee_events SET employeeid='".$result[0]["id"]."' WHERE employeeid = '".$res[$i]["employeeid"]."'");
     }
   }
 
-  //copy all employees to the project_person table  
-  $projects = $db->getrows("SELECT * FROM employee_project");
-  for ($i=0;$i<count($projects);$i++)
+  //copy all employees to the events_person table  
+  $eventss = $db->getrows("SELECT * FROM employee_events");
+  for ($i=0;$i<count($eventss);$i++)
   {
-    $db->query("INSERT INTO project_person (personid, projectid, role)
-                       VALUES ('".$projects[$i]["employeeid"]."', '".$projects[$i]["projectid"]."', 1)");    
+    $db->query("INSERT INTO events_person (personid, eventsid, role)
+                       VALUES ('".$eventss[$i]["employeeid"]."', '".$eventss[$i]["eventsid"]."', 1)");    
   }
   
-  $setup->dropTable("employee_project");    
+  $setup->dropTable("employee_events");    
   
-  //convert planning, employee_project, rate, usercontract, person, todo, todo_history and project table because this version
+  //convert planning, employee_events, rate, usercontract, person, todo, todo_history and events table because this version
   //does not use userid as primary key for employees    
   useridConvert("hours", "userid", $setup);
-  useridConvert("project", "coordinator", $setup);
-  useridConvert("project_person", "personid", $setup);
-  useridConvert("project_notes", "owner", $setup);
+  useridConvert("events", "coordinator", $setup);
+  useridConvert("events_person", "personid", $setup);
+  useridConvert("events_notes", "owner", $setup);
   useridConvert("usercontract", "userid", $setup);  
   useridConvert("person", "supervisor", $setup); 
   useridConvert("todo", "assigned_to", $setup);  
@@ -265,10 +265,10 @@
   $setup->alterColumn("hours", "phaseid", "phaseid", "int(10)", false);
   $setup->alterColumn("hours", "time", "time", "int(10)", false);
   //$setup->dropColumn("hours", "ratetype"); // no longer used.
-  $setup->alterColumn("project", "id", "id", "int(10)", false);
-  $setup->alterColumn("project", "status", "status", "varchar(15)", true);   
-  $setup->alterColumn("project", "description", "description", "text", true);   
-  $setup->alterColumn("project", "coordinator", "coordinator", "int(10)", true);   
+  $setup->alterColumn("events", "id", "id", "int(10)", false);
+  $setup->alterColumn("events", "status", "status", "varchar(15)", true);   
+  $setup->alterColumn("events", "description", "description", "text", true);   
+  $setup->alterColumn("events", "coordinator", "coordinator", "int(10)", true);   
   $setup->alterColumn("contract", "contracttype", "contracttype", "int(10)", false);
   $setup->alterColumn("contract", "billing_period", "billing_period", "varchar(12)", false);  
   $setup->alterColumn("contract", "id", "id", "int(10)", false);
@@ -308,22 +308,22 @@
   $setup->alterColumn("phase_activity", "phaseid", "phaseid", "int(10)", false);
   $setup->alterColumn("phase_activity", "activityid", "activityid", "int(10)", false);
   $setup->alterColumn("profile", "id", "id", "int(10)", false);
-  $setup->alterColumn("project_notes", "id", "id", "int(10)", false);
-  $setup->alterColumn("project_notes", "projectid", "projectid", "int(10)", false);
-  $setup->alterColumn("project_notes", "description", "description", "text", false);
+  $setup->alterColumn("events_notes", "id", "id", "int(10)", false);
+  $setup->alterColumn("events_notes", "eventsid", "eventsid", "int(10)", false);
+  $setup->alterColumn("events_notes", "description", "description", "text", false);
   $setup->alterColumn("schedule", "id", "id", "int(10)", false);
   $setup->alterColumn("schedule_type", "id", "id", "int(10)", false);
   //$setup->alterColumn("schedule_note", "owner", "owner", "int(10)", false);
   //$setup->alterColumn("schedule_note", "schedule_id", "schedule_id", "int(10)", false);
   $setup->alterColumn("todo", "id", "id", "int(10)", false);
-  $setup->alterColumn("todo", "projectid", "projectid", "int(10)", false);
+  $setup->alterColumn("todo", "eventsid", "eventsid", "int(10)", false);
   $setup->alterColumn("todo", "status", "status", "int(1)", false);
   $setup->alterColumn("todo", "assigned_to", "assigned_to", "int(10)", true);
   $setup->alterColumn("todo", "priority", "priority", "int(1)", false);
   $setup->alterColumn("todo", "description", "description", "text", false);
   $setup->alterColumn("todo_history", "id", "id", "int(10)", false);
   $setup->alterColumn("todo_history", "todoid", "todoid", "int(10)", false);
-  $setup->alterColumn("todo_history", "projectid", "projectid", "int(10)", false);
+  $setup->alterColumn("todo_history", "eventsid", "eventsid", "int(10)", false);
   $setup->alterColumn("todo_history", "description", "description", "text", false);
   $setup->alterColumn("todo_history", "status", "status", "int(1)", false);
   $setup->alterColumn("todo_history", "priority", "priority", "int(1)", false);
@@ -333,18 +333,18 @@
   $setup->alterColumn("tpl_phase_activity", "activityid", "activityid", "int(10)", false);
   $setup->alterColumn("tpl_phase", "description", "description", "text", true);
   $setup->alterColumn("tpl_phase", "id", "id", "int(10)", false);  
-  $setup->alterColumn("tpl_project", "id", "id", "int(10)", false);  
-  $setup->alterColumn("tpl_project", "description", "description", "text", true);  
+  $setup->alterColumn("tpl_events", "id", "id", "int(10)", false);  
+  $setup->alterColumn("tpl_events", "description", "description", "text", true);  
  
   //change the node rights in the accessright table to this format: modulename.nodename
   $db->query("UPDATE accessright SET node = CONCAT('calendar.', node) WHERE node IN ('schedule', 'schedule_types', 'schedule_notes', 'schedule_attendees')");    
   $db->query("UPDATE accessright SET node = CONCAT('costreg.', node) WHERE node = 'costregistration'");  
   $db->query("UPDATE accessright SET node = CONCAT('employee.', node) WHERE node IN ('employee', 'profile', 'usercontracts', 'userprefs')");    
-  $db->query("UPDATE accessright SET node = CONCAT('finance.', node) WHERE node IN ('rates', 'finance_customer', 'finance_project', 'billing_project', 'currency', 'bill', 'bill_line')");  
-  $db->query("UPDATE accessright SET node = CONCAT('notes.', node) WHERE node IN ('project_notes', 'project_notesview')");    
+  $db->query("UPDATE accessright SET node = CONCAT('finance.', node) WHERE node IN ('rates', 'finance_customer', 'finance_events', 'billing_events', 'currency', 'bill', 'bill_line')");  
+  $db->query("UPDATE accessright SET node = CONCAT('notes.', node) WHERE node IN ('events_notes', 'events_notesview')");    
   $db->query("UPDATE accessright SET node = 'organization.organization' WHERE node = 'customer'");    
   $db->query("UPDATE accessright SET node = CONCAT('organization.', node) WHERE node IN ('contact', 'contracts', 'contracttype')");    
-  $db->query("UPDATE accessright SET node = CONCAT('project.', node) WHERE node IN ('project', 'phase', 'activity', 'tpl_phase', 'tpl_project')");  
+  $db->query("UPDATE accessright SET node = CONCAT('events.', node) WHERE node IN ('events', 'phase', 'activity', 'tpl_phase', 'tpl_events')");  
   $db->query("UPDATE accessright SET node = 'reports.hoursurvey', action='report' WHERE node='hours' AND action='hoursurvey'");
   $db->query("UPDATE accessright SET node = CONCAT('reports.', node) WHERE node IN ('weekreport')");      
   $db->query("UPDATE accessright SET node = CONCAT('resource_planning.', node) WHERE node = 'resource_planning'");    
@@ -359,7 +359,7 @@
   $setup->setVersion("1", "organization");
   $setup->setVersion("1", "person");
   $setup->setVersion("1", "pim");
-  $setup->setVersion("1", "project");
+  $setup->setVersion("1", "events");
   $setup->setVersion("1", "reports");
   $setup->setVersion("1", "search");
   $setup->setVersion("1", "setup");

@@ -12,7 +12,7 @@
  * @license http://www.achievo.org/licensing Achievo Open Source License
  *
  * @version $Revision: 5052 $
- * $Id: class.project_notes.inc 5052 2008-06-23 21:18:19Z sandy $
+ * $Id: class.events_notes.inc 5052 2008-06-23 21:18:19Z sandy $
  */
 
 useattrib("atkdateattribute");
@@ -21,26 +21,26 @@ useattrib("atknumberattribute");
 userelation("atkmanytoonerelation");
 
 /**
- * Class for managing project notes
+ * Class for managing events notes
  * @package achievo
  * @subpackage notes
  */
-class project_notes extends atkNode
+class events_notes extends atkNode
 {
   /**
    * Constructor
    */
-  function project_notes()
+  function events_notes()
   {
-    $this->atkNode("project_notes");
+    $this->atkNode("events_notes");
 
     $this->add(new atkNumberAttribute("id", AF_AUTOKEY));
     $this->add(new atkManyToOneRelation("owner", "employee.employee", AF_HIDE_ADD|AF_READONLY|AF_OBLIGATORY));
-    $this->add(new atkManyToOneRelation("projectid", "project.project",AF_OBLIGATORY|AF_SEARCHABLE|AF_READONLY));
+    $this->add(new atkManyToOneRelation("eventsid", "events.events",AF_OBLIGATORY|AF_SEARCHABLE|AF_READONLY));
     $this->add(new atkAttribute("title", AF_OBLIGATORY|AF_SEARCHABLE, 50));
     $this->add(new atkDateAttribute("entrydate", "","", date("Ymd"), 0, AF_HIDE_EDIT|AF_HIDE_ADD|AF_OBLIGATORY));
     $this->add(new atkTextAttribute("description" , TEXT_LARGE, AF_OBLIGATORY|AF_HIDE_LIST));
-    $this->setTable("project_notes");
+    $this->setTable("events_notes");
     $this->setOrder("entrydate");
 
   }

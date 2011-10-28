@@ -1,5 +1,5 @@
 <?php
 
-  $setup->installNode("project.project");
+  $setup->installNode("events.events");
 
 ?>

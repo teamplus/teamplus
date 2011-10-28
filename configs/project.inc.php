@@ -2,55 +2,55 @@
 
   // This variable configures wether hour registrations should be automatically deleted when
   // a phase is deleted. If omitted, false is default.
-  $config["project_cascading_delete_hours"] = false;
+  $config["events_cascading_delete_hours"] = false;
 
-  // Set a prefix for your initial projectcodes
-  // Example: $config["projectcode_prefix"] = "[startdate.year][startdate.month]";
-  $config["projectcode_prefix"] = "";
+  // Set a prefix for your initial eventscodes
+  // Example: $config["eventscode_prefix"] = "[startdate.year][startdate.month]";
+  $config["eventscode_prefix"] = "";
 
-  // If you want an automatic incrementing number to be added to the projectcodes, set this to true
-  // Example: $config["projectcode_autonumber"] = true;
-  $config["projectcode_autonumber"] = false;
+  // If you want an automatic incrementing number to be added to the eventscodes, set this to true
+  // Example: $config["eventscode_autonumber"] = true;
+  $config["eventscode_autonumber"] = false;
 
   // Give the automatic incrementing a specific number of digits (the number will be prefixed by zero's)
-  // Example: $config["projectcode_autonumberdigits"] = 3;
-  $config["projectcode_autonumberdigits"] = 1;
+  // Example: $config["eventscode_autonumberdigits"] = 3;
+  $config["eventscode_autonumberdigits"] = 1;
 
-  // If you have a custom module that implements projectcodes, configure it's name here
-  // Example: $config["projectcode_module"] = "mymodule";
-  $config["projectcode_module"] = "";
+  // If you have a custom module that implements eventscodes, configure it's name here
+  // Example: $config["eventscode_module"] = "mymodule";
+  $config["eventscode_module"] = "";
   
-  // Use autocomplete field instead of a project dropdown
-  $config['project_selection_autocomplete']=false;
+  // Use autocomplete field instead of a events dropdown
+  $config['events_selection_autocomplete']=false;
   
-  // The number of recents projects we show in the dropdown
-  $config['numberofrecentprojects']=10;
+  // The number of recents eventss we show in the dropdown
+  $config['numberofrecenteventss']=10;
   
   // When contacts needs to be obligatory, set this option to true
-  $config['project_contact_obligatory']=false;
+  $config['events_contact_obligatory']=false;
   
-  // The following configs are for copying a skel project directory
+  // The following configs are for copying a skel events directory
   // to a new location.
   
   // Project skel directory
-  $config['project_dir_skel']='';
+  $config['events_dir_skel']='';
   
   // Project destination directory
-  $config['project_dir_destination']='';
+  $config['events_dir_destination']='';
 
   // Project directory template, here you can use attributes from the
-  // project node. 
-  // Example: $config['project_dir_name_template']='[id]_[abbreviation]';
-  $config['project_dir_name_template']='';
+  // events node. 
+  // Example: $config['events_dir_name_template']='[id]_[abbreviation]';
+  $config['events_dir_name_template']='';
   
   // Project mail format, valid values are 'html' and 'htmlplain'
-  $config['project_formatmail']='html';
+  $config['events_formatmail']='html';
   
-  // Send of the project dir creation mail
+  // Send of the events dir creation mail
   $config['mail_sender']='';
   
-  // Receiver of the project dir creation mail
-  $config['project_sendto']='';
+  // Receiver of the events dir creation mail
+  $config['events_sendto']='';
   
 
 ?>

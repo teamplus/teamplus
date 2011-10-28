@@ -210,19 +210,19 @@ class employee extends person
   {
     $db = &atkGetDb();
     $data = $db->getrows("SELECT
-                              project.id, project.name, project.abbreviation, SUM(time) as total
+                              events.id, events.name, events.abbreviation, SUM(time) as total
                             FROM
-                              hours, phase, project
+                              hours, phase, events
                             WHERE
                               hours.phaseid = phase.id ".
                               ($params["employeeid"]!=""?" AND hours.userid = ".$params["employeeid"]:"")."
-                              AND phase.projectid = project.id".
+                              AND phase.eventsid = events.id".
                               ($params["viewstart"]!=""?" AND hours.activitydate>='".$params["viewstart"]."'":"").
                               ($params["viewend"]!=""?" AND hours.activitydate<='".$params["viewend"]."'":"").
                           " GROUP BY
-                              project.id,project.name
+                              events.id,events.name
                             ORDER BY
-                              project.name");
+                              events.name");
 
     if ($raw)
     {

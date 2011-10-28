@@ -1,5 +1,5 @@
 <?php
 
-$setup->dropColumn('hours','projectid');
+$setup->dropColumn('hours','eventsid');
 
 ?>

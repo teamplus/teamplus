@@ -9,102 +9,102 @@ useattrib("atkboolattribute");
 useattrib("atklistattribute");
 useattrib("atkboolattribute");
 
-class projectsurvey extends basereport
+class eventssurvey extends basereport
 {
   public function __construct()
   {
-    parent::basereport("projectsurvey");
+    parent::basereport("eventssurvey");
 
     /**
      * Project - autocomplete field with a 'select' button to select from a list
-     * In the autocomplete, I should be able to type a project name or a project number
+     * In the autocomplete, I should be able to type a events name or a events number
      */
-    $this->add(new atkManyToOneRelation("project","project.project", AF_MANYTOONE_AUTOCOMPLETE))
+    $this->add(new atkManyToOneRelation("events","events.events", AF_MANYTOONE_AUTOCOMPLETE))
     ->setAutoCompleteSearchFields(array("name","abbreviation"));
     
-    $this->add(new atkBoolAttribute("subproject"));
+    $this->add(new atkBoolAttribute("subevents"));
 
     /**
-     * from/to dates; if set, will only show projects/phases that 
+     * from/to dates; if set, will only show eventss/phases that 
      * have been worked on in that time frame.
      */
     $this->add(new atkDateAttribute("from"));
     $this->add(new atkDateAttribute("to"));
 
     /**
-     * select only projects/phases from this coordinator
+     * select only eventss/phases from this coordinator
      */
     $this->add(new atkManyToOneRelation("coordinator","employee.employee"));
 
     /**
-     * select only projects/phases that this person has booked time on
+     * select only eventss/phases that this person has booked time on
      */
     $this->add(new atkManyToOneRelation("worked_on_by","employee.employee"));
 
     /**
-     * select projects that match this description or phases that match
+     * select eventss that match this description or phases that match
      * this description
      */
     $this->add(new atkAttribute("description",0,50));
     
     /**
-     * We want to have default only active projects/phases but
-     * in the search criteria make it possible to search in only closed projects or both
+     * We want to have default only active eventss/phases but
+     * in the search criteria make it possible to search in only closed eventss or both
      */
-    $this->add(new atkListAttribute("projectstatus",array("active","nonactive","archived","all"),"",AF_LIST_NO_NULL_ITEM));
+    $this->add(new atkListAttribute("eventsstatus",array("active","nonactive","archived","all"),"",AF_LIST_NO_NULL_ITEM));
     $this->add(new atkListAttribute("phasestatus",array("active","nonactive","all"),"",AF_LIST_NO_NULL_ITEM));
 
     /**
      * ability to turn on/off columns (similar to hoursurvey)
      */
     $this->add(new atkMultiSelectAttribute("show_only_columns",
-    array($this->text("project"), $this->text("phase"), $this->text("coordinator"),
+    array($this->text("events"), $this->text("phase"), $this->text("coordinator"),
     $this->text("startdate"), $this->text("enddate"), $this->text("first_hr"), $this->text("last_hr"),
     $this->text("initial_planning"), $this->text("current_planning"), $this->text("spend_hours")),
-    array("project", "phase", "coordinator","startdate", "enddate", "first_hr", "last_hr",
+    array("events", "phase", "coordinator","startdate", "enddate", "first_hr", "last_hr",
     "initial_planning", "current_planning", "spend_hours"),4));
   }
 
   public function initial_values()
   {
-    return array("show_only_columns"=>array("project", "phase", "coordinator","startdate", "enddate", "first_hr", "last_hr",
-    "initial_planning", "current_planning", "spend_hours"),"projectstatus"=>"active","phasestatus"=>"active","subproject"=>0);
+    return array("show_only_columns"=>array("events", "phase", "coordinator","startdate", "enddate", "first_hr", "last_hr",
+    "initial_planning", "current_planning", "spend_hours"),"eventsstatus"=>"active","phasestatus"=>"active","subevents"=>0);
   }
   
-  public function project_selection($record, $mode)
+  public function events_selection($record, $mode)
   {
     /**
-     * security: you can only select projects that you are a coordinator of
-     * unless you have 'all projects' privilege. (I may change my mind later, if it's useful
+     * security: you can only select eventss that you are a coordinator of
+     * unless you have 'all eventss' privilege. (I may change my mind later, if it's useful
      * for developers I might want to change this).
      */
-    $node = &$this->getAttribute("project")->getDestination();
-    if(!$node->allowed("any_project"))
+    $node = &$this->getAttribute("events")->getDestination();
+    if(!$node->allowed("any_events"))
     {
-      $node->addFilter("project.coordinator='".atkGetUserId()."'");
+      $node->addFilter("events.coordinator='".atkGetUserId()."'");
     }
-    return $this->getAttribute("project")->getSelectableRecords($record, $mode);
+    return $this->getAttribute("events")->getSelectableRecords($record, $mode);
   }
 
   private function buildWhere($filterrecord)
   {
-    $node = &atkGetNode("project.project");
+    $node = &atkGetNode("events.events");
     $where = '';
     
-    if(!$node->allowed("any_project")) $where .= " WHERE p.coordinator='".atkGetUserId()."'";
+    if(!$node->allowed("any_events")) $where .= " WHERE p.coordinator='".atkGetUserId()."'";
     
-    if(isset($filterrecord['project']['id']))
+    if(isset($filterrecord['events']['id']))
     {
-      if(atkArrayNvl($filterrecord,'subproject'))
+      if(atkArrayNvl($filterrecord,'subevents'))
       {
         atkimport('modules.reports.utils.reportutils');
-        $ids = reportutils::getProjectAndSubProjectId($filterrecord['project']['id']);
+        $ids = reportutils::getProjectAndSubProjectId($filterrecord['events']['id']);
         $condition = "IN(".implode(",",$ids).")";
         $where .= ($where == "" ? " WHERE " : " AND ") . "p.id $condition";
       }
       else 
       {
-        $where .= ($where == "" ? " WHERE " : " AND ") . "p.id = '".$filterrecord['project']['id']."'";
+        $where .= ($where == "" ? " WHERE " : " AND ") . "p.id = '".$filterrecord['events']['id']."'";
       }
     }
     
@@ -131,9 +131,9 @@ class projectsurvey extends basereport
         OR LOWER(t.description) LIKE LOWER('%".$filterrecord['description']."%'))";
     }
     
-    if($filterrecord['projectstatus']<>'all')
+    if($filterrecord['eventsstatus']<>'all')
     {
-      $where .= ($where == "" ? " WHERE " : " AND ") . "p.status = '".$filterrecord['projectstatus']."'";
+      $where .= ($where == "" ? " WHERE " : " AND ") . "p.status = '".$filterrecord['eventsstatus']."'";
     }
     
     if($filterrecord['phasestatus']<>'all')
@@ -147,22 +147,22 @@ class projectsurvey extends basereport
   {
     /*@var $db atkDb*/
     $db = &$this->getDb();
-    $node = &atkGetNode("project.project");
+    $node = &atkGetNode("events.events");
 
     /**
-     * If I choose to hide the phase column, then it needs to just show 1 line per project, 
+     * If I choose to hide the phase column, then it needs to just show 1 line per events, 
      * and the initial/current/actual should be the sum of the phases. I.o.w. if I have a 
-     * 3-phase project, each with 50 hours, and I'm asking for a report on all my current 
-     * projects but not at the phase level, it should just show the project with 150 as planning.
+     * 3-phase events, each with 50 hours, and I'm asking for a report on all my current 
+     * eventss but not at the phase level, it should just show the events with 150 as planning.
      * 
      * We have to see first hour/last hour and start/end in both scenario's.
-     * If we display only the project, it's the first and last hour booked on the
-     * project. If we show all phases, then it's the first and last hour on the phase.
+     * If we display only the events, it's the first and last hour booked on the
+     * events. If we show all phases, then it's the first and last hour on the phase.
      * Same for the dates. 
      */
     $querystring = "
       SELECT"
-    . (!in_array("project",$filterrecord['show_only_columns']) ? "" : " p.name project, p.id projectid,")
+    . (!in_array("events",$filterrecord['show_only_columns']) ? "" : " p.name events, p.id eventsid,")
     . (!in_array("phase",$filterrecord['show_only_columns']) ? "" : " t.name phase,t.id phaseid,")
     . (!in_array("coordinator",$filterrecord['show_only_columns']) ? "" : " CONCAT(IFNULL(c.lastname,''),' ',IFNULL(c.firstname,'')) coordinator,")
     . (!in_array("first_hr",$filterrecord['show_only_columns']) ? "" : " s.first_hr,")
@@ -179,22 +179,22 @@ class projectsurvey extends basereport
         ((!in_array("startdate",$filterrecord['show_only_columns']) ? "" : " t.startdate,") 
        . (!in_array("enddate",$filterrecord['show_only_columns']) ? "" : " t.enddate,")) )
     . "0 FROM
-        project p
-        JOIN phase t on p.id=t.projectid
+        events p
+        JOIN phase t on p.id=t.eventsid
         LEFT JOIN person c on p.coordinator = c.id "
         . (isset($filterrecord['worked_on_by']['id']) ? "JOIN " : "LEFT JOIN ") . 
          "(SELECT 
             SUM(h.time) spend_hours,
             min(h.activitydate) first_hr,
             max(h.activitydate) last_hr,
-            t.projectid,
+            t.eventsid,
             h.userid,
             t.id phaseid
            FROM 
              hoursbase h JOIN phase t ON h.phaseid=t.id"
            . (isset($filterrecord['worked_on_by']['id']) ? " WHERE h.userid='".$filterrecord['worked_on_by']['id']."'" : "")
-           . (!in_array("phase",$filterrecord['show_only_columns']) ? " GROUP BY t.projectid" : " GROUP BY t.id")
-           . ") s ON s.projectid=p.id AND t.id=s.phaseid";
+           . (!in_array("phase",$filterrecord['show_only_columns']) ? " GROUP BY t.eventsid" : " GROUP BY t.id")
+           . ") s ON s.eventsid=p.id AND t.id=s.phaseid";
 
     //Build where condition
     $where = $this->buildWhere($filterrecord);
@@ -209,7 +209,7 @@ class projectsurvey extends basereport
     
     $rows = $db->getrows($querystring.$where.$group);
     
-    if(count($rows)==0) return array("projectsurvey_report"=>$this->text("empty_resultset"));
+    if(count($rows)==0) return array("eventssurvey_report"=>$this->text("empty_resultset"));
 
     /*@var $tr tableRenderer*/    
     $tr = &atknew("module.reports.utils.tablerenderer");
@@ -228,25 +228,25 @@ class projectsurvey extends basereport
     if($node->allowed("edit")) $action = 'edit';
     elseif($node->allowed("view")) $action = 'view';
     
-    $phase = &atkGetNode("project.phase");
+    $phase = &atkGetNode("events.phase");
     
     foreach ($rows as $r)
     {
       $row = array();
 
-      if(array_key_exists('project',$r))
+      if(array_key_exists('events',$r))
       {
         /**
-         * Project should be a link to project edit (take security into account, 
-         * not everyone is allowed to edit projects; if not, use view, but also with security
+         * Project should be a link to events edit (take security into account, 
+         * not everyone is allowed to edit eventss; if not, use view, but also with security
          */
         if(empty($action))
         {
-          $row[] = $r['project'];
+          $row[] = $r['events'];
         }
         else 
         {
-          $row[] = href(dispatch_url("project.project",$action,array("atkselector"=>"project.id='".$r['projectid']."'")), $r['project'], SESSION_NESTED);
+          $row[] = href(dispatch_url("events.events",$action,array("atkselector"=>"events.id='".$r['eventsid']."'")), $r['events'], SESSION_NESTED);
         }
       }
       
@@ -273,7 +273,7 @@ class projectsurvey extends basereport
       if(array_key_exists('spend_hours',$r))
       {
         /**
-         * Similar to project admin phase list, the 'actual' should be a link 
+         * Similar to events admin phase list, the 'actual' should be a link 
          * to the hoursurvey to view details.
          */
         $params["phaseid"] = "phase.id='".$r['phaseid']."'";
@@ -294,7 +294,7 @@ class projectsurvey extends basereport
       }
           
       /**
-       * Row should be colored the same as in the project admin phase list
+       * Row should be colored the same as in the events admin phase list
        */
       $color = $phase->rowColor($r);
       if($color)
@@ -333,7 +333,7 @@ class projectsurvey extends basereport
     
     $list = $tr->render($recordset, TBL_DATA|TBL_FOOTER, "recordlist");
 
-    return array("projectsurvey_report"=>$list);
+    return array("eventssurvey_report"=>$list);
   }
 
 }

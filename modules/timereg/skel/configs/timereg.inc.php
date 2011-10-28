@@ -3,10 +3,10 @@
   
   /**
    * When the setting below is set to 'true', only employees
-   * that are projectmembers of the projects the current user
-   * is projectmanager of will be displayed.
+   * that are eventsmembers of the eventss the current user
+   * is eventsmanager of will be displayed.
    */
-  $config["hours_approve_projectteam_members_only"] = false;
+  $config["hours_approve_eventsteam_members_only"] = false;
   
   /**
    * When the setting below is set to 'true', the user will
@@ -28,7 +28,7 @@
   
   /**
    * When this setting is set to 'true', each coordinator
-   * approves hours for his/her projects.
+   * approves hours for his/her eventss.
   */
   $config["approve_period_per_coordinator"] = false;
 
@@ -48,11 +48,11 @@
   /**
    * Set a date from when the hoursnotblocked cron should
    * monitor the blocked weeks (usefull if you use this
-   * functionality on a existing project and you don't want
+   * functionality on a existing events and you don't want
    * to block all weeks before a certain date).
    * 
    * Enter as string in the format YYYY-MM-DD
-   * Leave empty to monitor all project weeks
+   * Leave empty to monitor all events weeks
    */
   
   $config["hoursnotblocked_from_date"] = "";

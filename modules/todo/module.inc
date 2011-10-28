@@ -32,20 +32,20 @@
 
     function getMenuItems()
     {
-      $selectedproject = array_key_exists("selectedproject", $_REQUEST) ? $_REQUEST["selectedproject"] : 0;
-      if ($selectedproject == 0)
+      $selectedevents = array_key_exists("selectedevents", $_REQUEST) ? $_REQUEST["selectedevents"] : 0;
+      if ($selectedevents == 0)
       {
-        $this->menuitem("project_todoview", dispatch_url("todo.project_todoview", "admin"), "projectmanagement", array("todo.todo", "admin"));
+        $this->menuitem("events_todoview", dispatch_url("todo.events_todoview", "admin"), "eventsmanagement", array("todo.todo", "admin"));
       }
       else
       {
-        $this->menuitem("project_todoview", dispatch_url("todo.project_todoview", "edit", array("atkselector" => "project.id=".$selectedproject)), "projectmanagement", array("todo.todo", "admin"));
+        $this->menuitem("events_todoview", dispatch_url("todo.events_todoview", "edit", array("atkselector" => "events.id=".$selectedevents)), "eventsmanagement", array("todo.todo", "admin"));
       }
     }
 
     function getDependencies($mode)
     {
-      return array("project");
+      return array("events");
     }
 
 

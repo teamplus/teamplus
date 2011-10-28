@@ -95,7 +95,7 @@ class Locking {
     {
       // Add record for every coordinator
       // First, get all coordinators who have to validate - this are the coordinators
-      // for the projects the person has registered time for this week.
+      // for the eventss the person has registered time for this week.
       $db = &atkGetDb();
 
       if ($lockmode == "week") {
@@ -108,8 +108,8 @@ class Locking {
                 SELECT DISTINCT person.id AS coordinator, person.firstname, person.lastname, person.email
                 FROM hours
                 LEFT JOIN phase ON (hours.phaseid = phase.id)
-                LEFT JOIN project ON (project.id = phase.projectid)
-                LEFT JOIN person ON (project.coordinator = person.id)
+                LEFT JOIN events ON (events.id = phase.eventsid)
+                LEFT JOIN person ON (events.coordinator = person.id)
                 WHERE hours.userid = '{$record['userid']['id']}'
                 AND DATE_FORMAT(activitydate,'{$dateformat}') = '{$record['period']}'
                 AND coordinator IS NOT NULL");

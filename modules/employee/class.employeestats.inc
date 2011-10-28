@@ -152,7 +152,7 @@
         $output.= "<br><br>".$prjstats->showGraph();
 
         // Textual version:
-        $output.= "<br><br>".$this->_tableStats(atktext("project"), $prjdata, array("abbreviation", "name"), $detailparams, "projectid");
+        $output.= "<br><br>".$this->_tableStats(atktext("events"), $prjdata, array("abbreviation", "name"), $detailparams, "eventsid");
 
         // ACTIVITY STATS
         $activitystats = &new dataGraphAttribute("activitytimedistribution", "activitytime", $params, "auto");

@@ -35,7 +35,7 @@
 # If you're using Apache web server, replace the htaccess.txt to to .htaccess,
 # and set the proper options and paths.
 # For WSGI and mod_python, you may need to download modpython_gateway from:
-# http://projects.amor.org/misc/svn/modpython_gateway.py and copy it in this
+# http://eventss.amor.org/misc/svn/modpython_gateway.py and copy it in this
 # directory.
 
 

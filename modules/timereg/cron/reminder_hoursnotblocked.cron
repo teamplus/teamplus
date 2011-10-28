@@ -32,9 +32,9 @@
    */
   function get_not_locked_weeks(&$emailaddress_collector)
   {
-    $projects = get_projects_with_employees();
+    $eventss = get_eventss_with_employees();
 
-    foreach($projects as $p)
+    foreach($eventss as $p)
     {
       // get weeknumbers that should be locked
       $startdate = "{$p['startdate']['year']}-{$p['startdate']['month']}-{$p['startdate']['day']}";
@@ -47,15 +47,15 @@
       if (is_string($bottomlimit_date) && $bottomlimit_date != "" && strtotime($enddate) < strtotime($bottomlimit_date))
         continue;
 
-      $weeknumbers = project_dates_to_weeknumbers($startdate,$enddate);
+      $weeknumbers = events_dates_to_weeknumbers($startdate,$enddate);
 
-      // get all the employees for this project
-      $project_employees = array();
-      foreach($p['members'] as $project_member)
-        $project_employees[] = $project_member['personid']['id'];
+      // get all the employees for this events
+      $events_employees = array();
+      foreach($p['members'] as $events_member)
+        $events_employees[] = $events_member['personid']['id'];
 
       // check for every employee if the hours are locked for the given week
-      $missing_locks = check_for_employee_nonblocked_weeks($project_employees,$weeknumbers);
+      $missing_locks = check_for_employee_nonblocked_weeks($events_employees,$weeknumbers);
 
       // add employees to collector
       foreach($missing_locks as $person_id => $weeks)
@@ -115,13 +115,13 @@
   }
 
   /**
-   * Gets projects from database with employees that should register
+   * Gets eventss from database with employees that should register
    * time on it.
    */
-  function get_projects_with_employees()
+  function get_eventss_with_employees()
   {
-    $project_node = &getNode("project.project");
-    $records = $project_node->selectDb("project.startdate < '".get_lastweek_date()."'","","","",array("id","name","abbreviation","coordinator","members","startdate","enddate"));
+    $events_node = &getNode("events.events");
+    $records = $events_node->selectDb("events.startdate < '".get_lastweek_date()."'","","","",array("id","name","abbreviation","coordinator","members","startdate","enddate"));
     return $records;
   }
 
@@ -129,16 +129,16 @@
    * Return an array with weeknumbers that should have time registered
    * on them.
    *
-   * @param string $project_startdate Project startdate in the format YYYY-MM-DD
-   * @param string $project_enddate   Project enddate in the format YYYY-MM-DD
+   * @param string $events_startdate Project startdate in the format YYYY-MM-DD
+   * @param string $events_enddate   Project enddate in the format YYYY-MM-DD
    * @return array An array with weeknumbers, for example: Array ('200618','200619',....);
    */
-  function project_dates_to_weeknumbers($project_startdate,$project_enddate)
+  function events_dates_to_weeknumbers($events_startdate,$events_enddate)
   {
     $return_array = array();
 
-    $datepointer = strtotime($project_startdate);
-    $loop_until = strtotime($project_enddate);
+    $datepointer = strtotime($events_startdate);
+    $loop_until = strtotime($events_enddate);
 
     if ($loop_until > strtotime(get_lastweek_date()))
       $loop_until = strtotime(get_lastweek_date());

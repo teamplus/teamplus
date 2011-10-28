@@ -448,7 +448,7 @@ class weekreport extends atkNode
       }
       $data[] = array($nameswitch,$users);
 
-      $data[] = array(atktext('functionlevel','project').':',$repUtils->get_functionlevels($functionlevelswitch, $lowerlevels));
+      $data[] = array(atktext('functionlevel','events').':',$repUtils->get_functionlevels($functionlevelswitch, $lowerlevels));
 
       $data[] = array('<hr>','<hr>');
 
