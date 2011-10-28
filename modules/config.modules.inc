@@ -24,7 +24,7 @@
   module("setup");
   module("employee");
   module("person");
-  module("timereg");
+  //module("timereg");
   module("project");
   module("organization");
   module("notes");
