@@ -43,9 +43,9 @@
                              OWNER.lastname as owner_lastname,
                              OWNER.firstname as owner_firstname,
                              OWNER.email as owner_email,
-                             events.name as events_name
+                             project.name as project_name
                            FROM
-                             todo LEFT JOIN events ON (todo.eventsid = events.id),
+                             todo LEFT JOIN project ON (todo.projectid = project.id),
                              person ASSIGNED,
                              person OWNER
                             WHERE
@@ -107,7 +107,7 @@
         for ($i=0, $_i=count($today);$i<$_i;$i++)
         {
           $body.="  - ".$today[$i]["title"];
-          if ($today[$i]["events_name"]!="") $body.= " (".$today[$i]["events_name"].")";
+          if ($today[$i]["project_name"]!="") $body.= " (".$today[$i]["project_name"].")";
 
           // Display owner if this todo is assigned to you by somebody else then you.
           if ($who=="toyou" && $today[$i]["owner_email"]!=$to)
@@ -131,7 +131,7 @@
         for ($i=0, $_i=count($late);$i<$_i;$i++)
         {
           $body.="  - ".$late[$i]["title"];
-          if ($late[$i]["events_name"]!="") $body.= " (".atktext("events").": ".$late[$i]["events_name"].")\n";
+          if ($late[$i]["project_name"]!="") $body.= " (".atktext("project").": ".$late[$i]["project_name"].")\n";
           $body.="    ".atktext("duedate").": ".$late[$i]["duedate"];
           // Display owner if this todo is assigned to you by somebody else then you.
           if ($who=="toyou" && $late[$i]["owner_email"]!=$to)

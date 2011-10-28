@@ -10,7 +10,7 @@ Changes in Quotation 1.0.2
 	are left empty [Dennis]
 + Added some custom action icons [Dennis]
 * Several codechanges to make quotation work with new atk version. [Dennis]
-+ Added support for automatically adding a events after accepting
++ Added support for automatically adding a project after accepting
   a quotation. [Lineke]
 + Quotation price is now displayed in admin screen. [Ivo]
 * Updated German translation. [Udo]

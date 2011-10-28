@@ -26,20 +26,20 @@
   {
     function getNodes()
     {
-      registerNode("notes.events_notes", array("admin", "add", "edit", "delete"));
+      registerNode("notes.project_notes", array("admin", "add", "edit", "delete"));
     }
 
     function getMenuItems()
     {
-      $this->menuitem("-","","eventsmanagement");
-      $selectedevents = array_key_exists("selectedevents", $_REQUEST) ? $_REQUEST["selectedevents"] : 0;
-      if ($selectedevents == 0)
+      $this->menuitem("-","","projectmanagement");
+      $selectedproject = array_key_exists("selectedproject", $_REQUEST) ? $_REQUEST["selectedproject"] : 0;
+      if ($selectedproject == 0)
       {
-        $this->menuitem("events_notesview", dispatch_url("notes.events_notesview", "admin"), "eventsmanagement", array("notes.events_notes", "admin"));
+        $this->menuitem("project_notesview", dispatch_url("notes.project_notesview", "admin"), "projectmanagement", array("notes.project_notes", "admin"));
       }
       else
       {
-        $this->menuitem("events_notesview", dispatch_url("notes.events_notesview", "edit", array("atkselector" => "events.id=".$selectedevents)), "eventsmanagement", array("notes.events_notes", "admin"));
+        $this->menuitem("project_notesview", dispatch_url("notes.project_notesview", "edit", array("atkselector" => "project.id=".$selectedproject)), "projectmanagement", array("notes.project_notes", "admin"));
       }
     }
 
@@ -51,7 +51,7 @@
      */
     function getDependencies($mode)
     {
-      return array("events");
+      return array("project");
     }
   }
 

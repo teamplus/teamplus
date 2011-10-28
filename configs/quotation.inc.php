@@ -3,8 +3,8 @@
   // make the 'contactperson' field a relation instead of a textfield:
   $config['contact_is_relation'] = false;
 
-  // Add events after quotation is accepted
-  $config['quotation_addevents'] = true;
+  // Add project after quotation is accepted
+  $config['quotation_addproject'] = true;
 
   $config['quotation_dir'] = "./documents/quotation/";
   

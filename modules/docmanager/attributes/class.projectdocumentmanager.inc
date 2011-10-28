@@ -4,7 +4,7 @@
    * Detailed copyright and licensing information can be found
    * in the doc/COPYRIGHT and doc/LICENSE files which should be
    * included in the distribution.
-   * eventstpl_doctype node class file
+   * projecttpl_doctype node class file
    *
    * @package achievo
    * @subpackage docmanager
@@ -13,7 +13,7 @@
    * @license http://www.achievo.org/licensing Achievo Open Source License
    *
    * @version $Revision: 5078 $
-   * $Id: class.eventsdocumentmanager.inc 5078 2008-06-30 21:22:57Z sandy $
+   * $Id: class.projectdocumentmanager.inc 5078 2008-06-30 21:22:57Z sandy $
    */
 
   /**
@@ -22,13 +22,13 @@
   useattrib("docmanager.documentmanager");
 
   /**
-   * The class for eventsdocumentmanager attribute.
+   * The class for projectdocumentmanager attribute.
    *
    * @author guido <guido@ibuildings.nl>
    * @package achievo_modules
    * @subpackage docmanager
    */
-  class eventsDocumentManager extends documentManager
+  class projectDocumentManager extends documentManager
   {
 
     /**
@@ -39,7 +39,7 @@
      */
     function getDocumentTypes($record)
     {
-      // Read the template used to generate the events
+      // Read the template used to generate the project
       $template = $record["template"]["id"];
 
       // If the template is empty (aka unkown), then offer no types
@@ -48,15 +48,15 @@
         return parent::getDocumentTypes($record);
       }
 
-      // Get the document types by querying the eventspl_doctype relation
-      $eventstpl_doctypenode = &getNode("docmanager.eventstpl_doctype");
-      $eventstpl_doctypes = $eventstpl_doctypenode->selectDb("eventstpl_id='$template'");
+      // Get the document types by querying the projectpl_doctype relation
+      $projecttpl_doctypenode = &getNode("docmanager.projecttpl_doctype");
+      $projecttpl_doctypes = $projecttpl_doctypenode->selectDb("projecttpl_id='$template'");
 
       // Create an associative array containing $id=>$name items for each documenttype
       $documenttypearray = array();
-      foreach ($eventstpl_doctypes as $eventstpl_doctype)
+      foreach ($projecttpl_doctypes as $projecttpl_doctype)
       {
-        $documenttypearray[$eventstpl_doctype["documenttype_id"]["id"]] = $eventstpl_doctype["documenttype_id"]["name"];
+        $documenttypearray[$projecttpl_doctype["documenttype_id"]["id"]] = $projecttpl_doctype["documenttype_id"]["name"];
       }
 
       // Return the list of document types

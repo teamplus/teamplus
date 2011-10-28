@@ -214,7 +214,7 @@
   	    	$this->m_viewdate = $this->m_postvars["viewdate"];
 
   	    	// Add the approve screen to the page
-  	    	$boxes[] = $this->weekview(atkConfig::get('timereg','hours_approve_eventsteam_members_only'));
+  	    	$boxes[] = $this->weekview(atkConfig::get('timereg','hours_approve_projectteam_members_only'));
 	    	}
 
 	    }
@@ -275,7 +275,7 @@
 
       // Display the year input form
       $header = "";
-      if ($func_code != null) $header.= atktext('functionlevel','events').': '.$func_code.'<br />';
+      if ($func_code != null) $header.= atktext('functionlevel','project').': '.$func_code.'<br />';
       $header.= atktext("year")." : ".$yearattrib->edit(array("year"=>$year)).'&nbsp;&nbsp;';
       $header.= '<input type="submit" name="atkbtn1" value="'.atktext("view").'">';
       //$header.= atkbutton(atktext("view"), dispatch_url("timereg.hours_approve", "admin"), SESSION_REPLACE);
@@ -289,7 +289,7 @@
       if (atkconfig::get('timereg','hours_approve_only_show_not_approved') == true)
         $footer .= "<br />" . atktext('hours_approve_only_show_not_approved');
 
-       if (atkconfig::get('timereg','hours_approve_eventsteam_members_only') == true)
+       if (atkconfig::get('timereg','hours_approve_projectteam_members_only') == true)
         $footer .= "<br />" . atktext('hours_approve_explain_teammembers_only');
 
 	    $footer.= $this->convertheck();
@@ -460,7 +460,7 @@
 
 	  /**
 	   * Get where-clause, so all employees with a lower functionlevel than logged-in user will retrieved
-	   * Do not check on 'hours_approve_eventsteam_members_only' and 'any_user'-right (else filtering won't work)
+	   * Do not check on 'hours_approve_projectteam_members_only' and 'any_user'-right (else filtering won't work)
 	   *
 	   * @param int $current_user_id
 	   * @param int $selected_functionlevel_id
@@ -518,19 +518,19 @@
 	  {
 	    $where = ($this->userHasAnyUserRight($current_user_id)) ? "" : "person.supervisor = '$current_user_id'";
 
-	    $add_eventsmembers_filter = atkConfig::get('timereg','hours_approve_eventsteam_members_only');
+	    $add_projectmembers_filter = atkConfig::get('timereg','hours_approve_projectteam_members_only');
 
-	    if ($add_eventsmembers_filter == true && $current_user_id != -1 && !is_null($current_user_id))
+	    if ($add_projectmembers_filter == true && $current_user_id != -1 && !is_null($current_user_id))
 	    {
-        // get employees who are in the eventsteams that have current user
-        // as events leader.
+        // get employees who are in the projectteams that have current user
+        // as project leader.
         $query = "SELECT DISTINCT
-                    events_person.personid
+                    project_person.personid
                   FROM
-                    events_person
-                  LEFT JOIN events ON (events.id = events_person.eventsid)
+                    project_person
+                  LEFT JOIN project ON (project.id = project_person.projectid)
                   WHERE
-                    events.coordinator = '$current_user_id'
+                    project.coordinator = '$current_user_id'
         ";
 
         $g_db = &atkGetDb();

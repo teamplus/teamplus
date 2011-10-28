@@ -4,7 +4,7 @@
  * Expired contracts cronjob script
  *
  * Checks for active expired contracts and updates its status to archived. 
- * It also updates any linked events and sets its status to non-active.
+ * It also updates any linked project and sets its status to non-active.
  *
  * @package achievo
  * @subpackage organization
@@ -20,27 +20,27 @@
  */
 
   /**
-   * Mail a message that a contract and/or its eventss have been altered     
+   * Mail a message that a contract and/or its projects have been altered     
    *
    * Mail a message to a user that a specified contract has expired 
-   * and its status and the status of its linked eventss have been altered 
+   * and its status and the status of its linked projects have been altered 
    * (modus = "expired")
    * 
    * OR
    * 
    * Mail a message to a user that a specified ended contract had active 
-   * eventss and that the status of these eventss has been altered 
+   * projects and that the status of these projects has been altered 
    * (modus = "ended").
    * 
    * @param array contract one contract
-   * @param array eventss an array with eventss
+   * @param array projects an array with projects
    * @param string newcontractstatus the status that the contract has been changed to
-   * @param string neweventsstatus the status that the eventss have been changed to
+   * @param string newprojectstatus the status that the projects have been changed to
    * @param array mailto an array with mailadresses
    * @param string modus should be either "modus" or "expired"
    * @return nothing
    */
-  function mailmessage($contract, $eventss, $newcontractstatus, $neweventsstatus, $mailto, $mailtocoordinator, $modus, $debug_mode)
+  function mailmessage($contract, $projects, $newcontractstatus, $newprojectstatus, $mailto, $mailtocoordinator, $modus, $debug_mode)
 	{	  
 	  $body = "";             //mail body
 	  $subject = "";	        //mail subject
@@ -69,26 +69,26 @@
       $body.= atktext("enddate","organization").": ".$enddate."\n";      
       $body.= atktext("statuschangedto","organization").": ".atktext($newcontractstatus,"organization")."\n\n\n";
       
-      if($eventss != array())
+      if($projects != array())
       {       
-       foreach ($eventss as $events)
+       foreach ($projects as $project)
        {	       
-         $body.= " * ".atktext("events","events").": ".$events["name"]." (".$events["id"].")\n";         
+         $body.= " * ".atktext("project","project").": ".$project["name"]." (".$project["id"].")\n";         
          
          $enddate = atktext("none","organization");
          
-         if(!is_array($events["enddate"]))
-          $events["enddate"] = dateutil::str2arr($events["enddate"]);
+         if(!is_array($project["enddate"]))
+          $project["enddate"] = dateutil::str2arr($project["enddate"]);
 
-         if(isset($events["enddate"]) && $events["enddate"]!='')
-          $enddate = $events['enddate']['day']."-".$events['enddate']['month']."-".$events['enddate']['year'];
+         if(isset($project["enddate"]) && $project["enddate"]!='')
+          $enddate = $project['enddate']['day']."-".$project['enddate']['month']."-".$project['enddate']['year'];
          
-         $body.= "   ".atktext("enddate","events").": ".$enddate."\n";
-         $body.= "   ".atktext("statuschangedto","organization").": ".atktext($neweventsstatus,"events")."\n\n\n";
+         $body.= "   ".atktext("enddate","project").": ".$enddate."\n";
+         $body.= "   ".atktext("statuschangedto","organization").": ".atktext($newprojectstatus,"project")."\n\n\n";
        }
       }
       else
-        $body.= atktext("no_active_eventss_linked_to_contract","organization")."\n\n";        
+        $body.= atktext("no_active_projects_linked_to_contract","organization")."\n\n";        
 	  }
 	  elseif($modus == "ended")
 	  {
@@ -109,29 +109,29 @@
         
       $body.= atktext("enddate","organization").": ".$enddate."\n\n\n";
               
-      //we already know $eventss != array()
-      foreach ($eventss as $events)
+      //we already know $projects != array()
+      foreach ($projects as $project)
       {
-        $body.= " * ".atktext("events","events").": ".$events["name"]." (".$events["id"].")\n";         
+        $body.= " * ".atktext("project","project").": ".$project["name"]." (".$project["id"].")\n";         
          
         $enddate = atktext("none","organization");
          
-        if(!is_array($events["enddate"]))
-         $events["enddate"] = dateutil::str2arr($events["enddate"]);
+        if(!is_array($project["enddate"]))
+         $project["enddate"] = dateutil::str2arr($project["enddate"]);
   
-        if(isset($events["enddate"]) && $events["enddate"]!='')
-         $enddate = $events['enddate']['day']."-".$events['enddate']['month']."-".$events['enddate']['year'];
+        if(isset($project["enddate"]) && $project["enddate"]!='')
+         $enddate = $project['enddate']['day']."-".$project['enddate']['month']."-".$project['enddate']['year'];
          
-        $body.= "   ".atktext("enddate","events").": ".$enddate."\n";
-        $body.= "   ".atktext("statuschangedto","organization").": ".atktext($neweventsstatus,"events")."\n\n\n";
+        $body.= "   ".atktext("enddate","project").": ".$enddate."\n";
+        $body.= "   ".atktext("statuschangedto","organization").": ".atktext($newprojectstatus,"project")."\n\n\n";
       }
 	  }	  
 	  
-	  //if $mailtocoordinator=true and we have changed eventss: create coordinator email and get emailaddresses
-	  //get coordinator mailadresses for these eventss
+	  //if $mailtocoordinator=true and we have changed projects: create coordinator email and get emailaddresses
+	  //get coordinator mailadresses for these projects
 	  $coordinatormails = array();
-	  if($mailtocoordinator && $eventss != array())	  
-      $coordinatormails = getCoordinatorEmailAddresses($eventss);	  
+	  if($mailtocoordinator && $projects != array())	  
+      $coordinatormails = getCoordinatorEmailAddresses($projects);	  
      
 	  //send coordiantor emails 	  
 	  foreach($coordinatormails as $mail)
@@ -173,16 +173,16 @@
 	}
 
 	/**
-	 * Get the email addresses of the coordinators of the given eventss	 
+	 * Get the email addresses of the coordinators of the given projects	 
 	 *
-	 * @param array $eventss eventss
+	 * @param array $projects projects
 	 * @return array email addresses
 	 */
-	function getCoordinatorEmailAddresses($eventss)
+	function getCoordinatorEmailAddresses($projects)
 	{
-	  //first we retrieve all the coordinator addresses from the eventss
+	  //first we retrieve all the coordinator addresses from the projects
 	  $alladresses = array();	  
-	  foreach($eventss as $p) 
+	  foreach($projects as $p) 
 	  {
 	    if($p["coordinator"] != array())
 	    {
@@ -219,14 +219,14 @@
 	 * Get ended contracts
 	 *
 	 * Retrieve the contracts that are not active.
-	 * And that have an active events linked to them.
+	 * And that have an active project linked to them.
 	 *	 
 	 * @return array contracts
 	 */
   function getEndedContracts($status)
   {    
     //$node = &getNode("organization.contracts");
-    $node = &getNode("events.events");
+    $node = &getNode("project.project");
     $db = &atkGetDb();
     $query = $db->createQuery();
     $query->addField("id","","contract");
@@ -234,8 +234,8 @@
     $query->addField("status","","contract");
     $query->addField("description","","contract");
     $query->addField("description as contracttypedesc","","contracttype");
-    $query->addTable("events");    
-    $query->addJoin("contract","","contract.id=events.contract_id",true);
+    $query->addTable("project");    
+    $query->addJoin("contract","","contract.id=project.contract_id",true);
     $query->addJoin("contracttype","","contract.contracttype=contracttype.id",true);
     
     //add 'contract.status=' before each element and '' around the element.
@@ -246,28 +246,28 @@
     $selector = "(".implode(" OR ",$status).")";
     $query->addCondition($selector);
     
-    $query->addCondition("events.status='active'");
+    $query->addCondition("project.status='active'");
     $sql = $query->buildSelect(true);
     return $db->getrows($sql);
   }
   
   /**
-   * Get active eventss that are linked to the specified contractid
+   * Get active projects that are linked to the specified contractid
    *
-   * Retrieves the active eventss that are linked to the specified contractid.
+   * Retrieves the active projects that are linked to the specified contractid.
    *
    * @param int contractid id of contract
-   * @return array eventss
+   * @return array projects
    */
   function getActiveLinkedProjects($contractid)
   { 
-    $node = &getNode("organization.contract_events");
+    $node = &getNode("organization.contract_project");
     $nodeemp = &getNode("employee.employee");
     
-    $selector = "events.contract_id=$contractid AND events.status = 'active'";
+    $selector = "project.contract_id=$contractid AND project.status = 'active'";
     $records = $node->selectDb($selector);
     
-    //get the coordinators mailadress from each events and add it to the events
+    //get the coordinators mailadress from each project and add it to the project
     for($i=0,$_i=count($records);$i<$_i;$i++)
     {
       $coordinatorid = (isset($records[$i]["coordinator"]["id"])) ? $records[$i]["coordinator"]["id"] : 0;
@@ -289,14 +289,14 @@
    * Handle all expired contracts
    *
    * @param array   $expiredcontracts description
-   * @param string  $neweventsstatus description
+   * @param string  $newprojectstatus description
    * @param string  $newcontractstatus description
    * @param array   $mailto description
    * @param boolean $mailtocoordinator description
    * @param int     $debug_mode debug modus
    * @return nothing
    */
-  function handleExpiredContracts($expiredcontracts, $neweventsstatus, $newcontractstatus, $mailto, $mailtocoordinator, $debug_mode)
+  function handleExpiredContracts($expiredcontracts, $newprojectstatus, $newcontractstatus, $mailto, $mailtocoordinator, $debug_mode)
   {
     //get nodes
     $node         = &getNode("organization.contracts");    
@@ -306,17 +306,17 @@
     foreach ($expiredcontracts as $c)
     {       
       echo "Contract: ".$c["subject"]." (id: ".$c["id"].")";
-      //get active linked eventss
-      $eventss = getActiveLinkedProjects($c["id"]);
+      //get active linked projects
+      $projects = getActiveLinkedProjects($c["id"]);
           
-      if(count($eventss) > 0)
+      if(count($projects) > 0)
       {                 
-        echo " -> ".count($eventss)." Linked active eventss\n";         
-        handleLinkedProjects($eventss,$neweventsstatus,$debug_mode);
+        echo " -> ".count($projects)." Linked active projects\n";         
+        handleLinkedProjects($projects,$newprojectstatus,$debug_mode);
       }
       else 
       {
-        echo " -> No linked active eventss.\n";
+        echo " -> No linked active projects.\n";
       }
       ob_flush();    flush();
       
@@ -342,9 +342,9 @@
       }
       ob_flush();    flush();
       
-  	  //Send a mail when we changed a contract and perhaps its linked eventss
+  	  //Send a mail when we changed a contract and perhaps its linked projects
   	  if($mailto != array() || $mailtocoordinator)  
-          mailmessage($c, $eventss, $newcontractstatus, $neweventsstatus, $mailto, $mailtocoordinator, "expired", $debug_mode);      
+          mailmessage($c, $projects, $newcontractstatus, $newprojectstatus, $mailto, $mailtocoordinator, "expired", $debug_mode);      
     }
     echo "\n";
   }
@@ -354,14 +354,14 @@
    * Handle all ended contracts
    *
    * @param array   $endedcontracts records of ended contracts
-   * @param string  $neweventsstatus the status a events must be set to. 
+   * @param string  $newprojectstatus the status a project must be set to. 
    * @param string  $newcontractstatus the status a contract must be set to.
    * @param array   $mailto mailto addresses
-   * @param boolean $mailtocoordinator indicates if the coordinator of a events should get an email as well.
+   * @param boolean $mailtocoordinator indicates if the coordinator of a project should get an email as well.
    * @param int     $debug_mode debug modus
    * @return nothing
    */
-  function handleEndedContracts($endedcontracts, $neweventsstatus, $newcontractstatus, $mailto, $mailtocoordinator, $debug_mode)
+  function handleEndedContracts($endedcontracts, $newprojectstatus, $newcontractstatus, $mailto, $mailtocoordinator, $debug_mode)
   {
     //get nodes
     $node         = &getNode("organization.contracts");
@@ -371,19 +371,19 @@
     //loop through each contract
     foreach ($endedcontracts as $c)
     {    
-      //check if these ended contracts have eventss that are still active.
-      $eventss = getActiveLinkedProjects($c["id"]);
-      $numeventss = count($eventss);
-      if($numeventss > 0)
+      //check if these ended contracts have projects that are still active.
+      $projects = getActiveLinkedProjects($c["id"]);
+      $numprojects = count($projects);
+      if($numprojects > 0)
       {
         echo "Contract: ".$c["subject"]." (id: ".$c["id"].")\n";
-        echo " $numeventss linked active eventss found\n"; 
+        echo " $numprojects linked active projects found\n"; 
         
-        handleLinkedProjects($eventss, $neweventsstatus, $debug_mode);
+        handleLinkedProjects($projects, $newprojectstatus, $debug_mode);
          
-        //Only if we changed any eventss we want to send a mail
+        //Only if we changed any projects we want to send a mail
         if($mailto != array() || $mailtocoordinator)
-          mailmessage($c, $eventss, $newcontractstatus, $neweventsstatus, $mailto,  $mailtocoordinator, "ended", $debug_mode);             
+          mailmessage($c, $projects, $newcontractstatus, $newprojectstatus, $mailto,  $mailtocoordinator, "ended", $debug_mode);             
       }        
       else
       {
@@ -396,25 +396,25 @@
   }
   
   /**
-   * Handle all linked eventss
+   * Handle all linked projects
    *
-   * @param array   $eventss records of active linked eventss
-   * @param string  $neweventsstatus the status a events must be set to. 
+   * @param array   $projects records of active linked projects
+   * @param string  $newprojectstatus the status a project must be set to. 
    * @param int     $debug_mode debug modus
    * @return nothing
    */
-  function handleLinkedProjects($eventss, $neweventsstatus, $debug_mode)
+  function handleLinkedProjects($projects, $newprojectstatus, $debug_mode)
   {
-    $eventsnode  = &getNode("organization.contract_events");
+    $projectnode  = &getNode("organization.contract_project");
             
-    foreach ($eventss as $p)
+    foreach ($projects as $p)
     {
       //'On %1$s Achievo changed the contract status from %2$s to %3$s.Comment: The contract is not active.';
-  	  $desc = sprintf(atktext("on_date_achievo_changed_events_status_from_to","organization"),date("d-m-Y"),atktext($p["status"],"events"),atktext($neweventsstatus,"events"));
+  	  $desc = sprintf(atktext("on_date_achievo_changed_project_status_from_to","organization"),date("d-m-Y"),atktext($p["status"],"project"),atktext($newprojectstatus,"project"));
       
       $id = $p["id"];
       $description = (trim($p["description"])!='' && isset($p["description"])) ? trim($p["description"])."\n\n".$desc : $desc;
-      $query = "UPDATE events SET status='$neweventsstatus', description='".escapesql($description)."' WHERE id=$id";
+      $query = "UPDATE project SET status='$newprojectstatus', description='".escapesql($description)."' WHERE id=$id";
         
       //update the record in the database
       if(($debug_mode==1)||($debug_mode==0))
@@ -449,12 +449,12 @@
     
     //get nodes
     $node         = &getNode("organization.contracts");
-    $eventsnode  = &getNode("organization.contract_events");    
+    $projectnode  = &getNode("organization.contract_project");    
       
     //get configurations    
     $mailto             = atkConfig::get("organization", "organization_contracts_mailto",array());
     $mailtocoordinator  = atkConfig::get("organization", "organization_contracts_mailtocoordinator", false);
-    $neweventsstatus   = atkConfig::get("organization", "organization_contracts_eventss_newstatus","nonactive");    
+    $newprojectstatus   = atkConfig::get("organization", "organization_contracts_projects_newstatus","nonactive");    
     $newcontractstatus  = atkConfig::get("organization", "organization_expiredcontracts_contracts_newstatus","archived");    
     $hascolumnandvalue  = atkConfig::get("organization", "organization_expiredcontracts_hascolumnandvalue",array());
     $status             = atkConfig::get("organization", "organization_endedcontracts_status",array("nonactive","archived"));
@@ -472,13 +472,13 @@
     if($numexpiredcontracts > 0)    
     {
       echo " Handling $numexpiredcontracts contracts\n";
-      handleExpiredContracts($expiredcontracts,$neweventsstatus,$newcontractstatus,$mailto,$mailtocoordinator,$debug_mode);      
+      handleExpiredContracts($expiredcontracts,$newprojectstatus,$newcontractstatus,$mailto,$mailtocoordinator,$debug_mode);      
     }
     else
       echo " No expiring contracts found!\n";
             
     echo "\n Done checking for expired contracts...\n\n";    
-    echo "Checking for ended contracts with active linked eventss...\n\n";
+    echo "Checking for ended contracts with active linked projects...\n\n";
     ob_flush();    flush();
     //get contracts that have ended
     $endedcontracts = getEndedContracts($status);    
@@ -486,12 +486,12 @@
     if($numendedcontracts > 0)
     {
       echo " Handling $numendedcontracts contracts\n";
-      handleEndedContracts($endedcontracts,$neweventsstatus,$newcontractstatus,$mailto,$mailtocoordinator,$debug_mode);
+      handleEndedContracts($endedcontracts,$newprojectstatus,$newcontractstatus,$mailto,$mailtocoordinator,$debug_mode);
     }
     else 
       echo " No ended contracts found!\n";    
 
-    echo "Done checking for ended contracts with active linked eventss...\n\n";      
+    echo "Done checking for ended contracts with active linked projects...\n\n";      
 
     if($debug_mode == 2)    
       echo "\nFinished cronjob contracts.cron in debug_mode ($debug_mode)\n\n";

@@ -26,13 +26,13 @@ HTML-based emails and attachments. There are two proprietary
 development tools out there that have all the functionality built into
 easy to use classes: AspEmail(tm) and AspMail.  Both of these
 programs are COM components only available on Windows.  They are also a
-little pricey for smaller eventss.
+little pricey for smaller projects.
 
 Since I do Linux development I’ve missed these tools for my PHP coding.
 So I built a version myself that implements the same methods (object
 calls) that the Windows-based components do. It is open source and the
 LGPL license allows you to place the class in your proprietary PHP
-eventss.
+projects.
 
 
 Installation:
@@ -97,6 +97,6 @@ CHANGELOG
 
 See ChangeLog.txt
 
-Download: http://sourceforge.net/events/showfiles.php?group_id=26031
+Download: http://sourceforge.net/project/showfiles.php?group_id=26031
 
 Brent R. Matzelle

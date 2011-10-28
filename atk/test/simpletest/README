@@ -1,7 +1,7 @@
 SimpleTest
 ==========
 You probably got this package from...
-http://simpletest.sourceforge.net/eventss/simpletest/
+http://simpletest.sourceforge.net/projects/simpletest/
 
 If there is no licence agreement with this package please download
 a version from the location above. You must read and accept that
@@ -73,7 +73,7 @@ You can find a tutorial on...
 http://www.lastcraft.com/first_test_tutorial.php
 
 ...to get you started and this material will eventually become included
-with the events documentation. A French translation exists at...
+with the project documentation. A French translation exists at...
 
 http://www.onpk.net/index.php/2005/01/12/254-tutoriel-simpletest-decouvrir-les-tests-unitaires.
 

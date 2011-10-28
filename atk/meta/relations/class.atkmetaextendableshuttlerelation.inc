@@ -42,10 +42,10 @@ class atkMetaExtendableShuttleRelation extends atkExtendableShuttleRelation
    *                     intermediairy node. The intermediairy node is
    *                     assumed to have 2 attributes that are named
    *                     after the nodes at both ends of the relation.
-   *                     For example, if node 'events' has a M2M relation
+   *                     For example, if node 'project' has a M2M relation
    *                     with 'activity', then the intermediairy node
-   *                     'events_activity' is assumed to have an attribute
-   *                     named 'events' and one that is named 'activity'.
+   *                     'project_activity' is assumed to have an attribute
+   *                     named 'project' and one that is named 'activity'.
    *                     You can set your own keys by calling setLocalKey()
    *                     and setRemoteKey()
    * @param string $template The descriptor template

@@ -12,8 +12,8 @@ Changes in Achievo 1.4.5
 Changes in Achievo 1.4.4
 ------------------------
 * Fixed creating users when using MySQL Strict mode [Sandy]
-* Fixed SQLInjection in events graphs. [Sandy]
-* Fixed autonumbering of eventss. [Sandy]
+* Fixed SQLInjection in project graphs. [Sandy]
+* Fixed autonumbering of projects. [Sandy]
 
 Changes in Achievo 1.4.3
 ------------------------
@@ -70,8 +70,8 @@ Changes in Achievo 1.4RC1
   }
   After this only user with right 'realaction' for node 'realnode' can select
   "pimitemname" for adding to pim page. [Yury]
-+ Added ability to configure eventscode autonumbering in the configuration
-  file configs/events.inc.php. [Guido]
++ Added ability to configure projectcode autonumbering in the configuration
+  file configs/project.inc.php. [Guido]
 + Added ability to copy scheduler items. [Jeroen]
 + Added email functionality to scheduler so employees get notified by the
   scheduler by email when an event is triggered. [Guido]
@@ -92,9 +92,9 @@ Changes in Achievo 1.4RC1
 * Fixed showing all users in the weekreports. (Bug #1471) [Sandy]
 * Holidays shouldn't be clickable in the scheduler (Bug #971) [Sandy]
 * Fixed integrity violation error when registering hours on an 'all users' 
-  events, that did not have any members added to it. [Dennis, Sandy]
-* Fixed select page issue - events coordinator don't have access to events 
-  (if events only for member) on select page, if he don't have any_events 
+  project, that did not have any members added to it. [Dennis, Sandy]
+* Fixed select page issue - project coordinator don't have access to project 
+  (if project only for member) on select page, if he don't have any_project 
   right. [Yury] 
 * Moved cron documentation from /cron/README to /doc/CRON. [Guido]
 * Fixed minor layout issues in the scheduler. [Guido]
@@ -123,12 +123,12 @@ Changes in Achievo 1.4RC1
   the calendar module enabled. [Guido]
 * Beautified the scheduler recurring settings interface. [Guido]
 * Fixed cancel button in hours move page still moving the hours to the
-  selected events, phase and activity. This also happened when no
-  events/phase/activity was selected, so it effectively made the time
+  selected project, phase and activity. This also happened when no
+  project/phase/activity was selected, so it effectively made the time
   registrations invalid. [Guido]
 * Updated jpgraph to version 2.3 (php5 version) (bug #924) [Sandy]
 * Updated default width of graphs to 750px. [Sandy]
-* Fixed currency symbol in organization contracts and eventss. [Sandy]
+* Fixed currency symbol in organization contracts and projects. [Sandy]
 * Moved all configs to module specific config files in /configs. [Sandy]
 * Available themes are now cached in
   achievotmp/themes/available_themes.inc [Sandy]
@@ -140,7 +140,7 @@ Changes in Achievo 1.4RC1
 * Fixed achievo title in framed themes. [Sandy]
 * Show full username in top like frameless themes. [Sandy]
 * Fixed empty descriptors for organizations. [Guido]
-* Fixed SQL error when using subeventss if there isn't a events
+* Fixed SQL error when using subprojects if there isn't a project
   selected in the surveyhours. [Sandy]
 * Swedish javascript calendar works again. (bug #1061) [Sandy]
 * Popup calendar now also works when only day and month
@@ -148,7 +148,7 @@ Changes in Achievo 1.4RC1
 * Fixed bug in the weeknumber calculation for 2010. [Sandy]
 * Only Change the session language if the owner object
   is userpreferences. (bug #1241) [Sandy]
-* Fixed adding a events to a contract which caused an SQL error in some 
+* Fixed adding a project to a contract which caused an SQL error in some 
   cases. [Dennis]
 * Fixed fresh install of the person module so it installs completely
   instead of only installing until patch 6. [Dennis]

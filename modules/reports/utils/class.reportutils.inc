@@ -297,20 +297,20 @@ class reportutils
   }
   
   /**
-   * Get IDs from events and his subeventss
+   * Get IDs from project and his subprojects
    *
-   * @param integer $eventsid - master events id
-   * @return array with events and his subeventss
+   * @param integer $projectid - master project id
+   * @return array with project and his subprojects
    */
-  static function getProjectAndSubProjectId($eventsid)
+  static function getProjectAndSubProjectId($projectid)
   {
     $id = array();
-  	if(!empty($eventsid))
+  	if(!empty($projectid))
   	{
       $db = &atkGetDb();
-      $rows = $db->getrows("SELECT id FROM events WHERE master_events='$eventsid'");
+      $rows = $db->getrows("SELECT id FROM project WHERE master_project='$projectid'");
     
-      $id[] = $eventsid;
+      $id[] = $projectid;
     
       foreach ($rows as $row)
       {

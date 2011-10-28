@@ -1,5 +1,5 @@
 <?php
 
-$setup->alterColumn("todo_history","eventsid","eventsid","int(10)");
+$setup->alterColumn("todo_history","projectid","projectid","int(10)");
 
 ?>

@@ -12,7 +12,7 @@
  * @license http://www.achievo.org/licensing Achievo Open Source License
  *
  * @version $Revision: 5043 $
- * $Id: class.events_todoview.inc 5043 2008-06-23 20:40:44Z sandy $
+ * $Id: class.project_todoview.inc 5043 2008-06-23 20:40:44Z sandy $
  */
 
 userelation("atkmanytoonerelation");
@@ -27,18 +27,18 @@ useattrib("atknumberattribute");
  * @package achievo
  * @subpackage todo
  */
-class events_todoview extends atkNode
+class project_todoview extends atkNode
 {
   /**
    * Constructor
    *
-   * @return events_todoview
+   * @return project_todoview
    */
-  function events_todoview()
+  function project_todoview()
   {
     global $ATK_VARS;
 
-    $this->atkNode("events_todoview",NF_NO_ADD|NF_NO_DELETE);
+    $this->atkNode("project_todoview",NF_NO_ADD|NF_NO_DELETE);
 
     $this->add(new atkNumberAttribute("id"                                , AF_AUTOKEY));
     $this->add(new atkAttribute("name"                              , AF_READONLY));
@@ -46,16 +46,16 @@ class events_todoview extends atkNode
     $this->add(new atkManyToOneRelation("coordinator","employee.employee", AF_READONLY|AF_HIDE_LIST));
     $this->add(new atkTextAttribute("description"                   , TEXT_LARGE, AF_READONLY));
     $this->add(new atkDateAttribute("startdate","","",0,0 , AF_READONLY|AF_HIDE_LIST));
-    $this->add(new atkOneToManyRelation("todo","todo.todo","eventsid"  , AF_HIDE_LIST));
+    $this->add(new atkOneToManyRelation("todo","todo.todo","projectid"  , AF_HIDE_LIST));
 
-    $this->addFilter("events.status","active");
-    $this->setTable("events","events");
+    $this->addFilter("project.status","active");
+    $this->setTable("project","project");
     $this->setOrder("name");
     $this->setSecurityAlias("todo.todo");
     $this->addSecurityMap("edit","add");
 
 
-    atkdebug("events::events()");
+    atkdebug("project::project()");
   }
 
   /**
@@ -69,7 +69,7 @@ class events_todoview extends atkNode
   }
 
   /**
-   * Check for the any events right, if user doesn't have the right
+   * Check for the any project right, if user doesn't have the right
    * add a filter to the node
    *
    * @param object $handler
@@ -78,10 +78,10 @@ class events_todoview extends atkNode
   function action_admin(&$handler)
   {
     // Access control
-    if (!$this->allowed("any_events"))
+    if (!$this->allowed("any_project"))
     {
       $user = getUser();
-      $this->addFilter("events.coordinator=".$user["id"]);
+      $this->addFilter("project.coordinator=".$user["id"]);
     }
     return $handler->action_admin();
   }

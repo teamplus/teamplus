@@ -576,9 +576,9 @@
     /**
      * Name of the node that is used for privilege checking.
      *
-     * If a class is named 'events', then by default, if the system needs to
+     * If a class is named 'project', then by default, if the system needs to
      *  know whether a user may edit a record, the securitymanager searches
-     * for 'edit' access on 'events'. However, if an alias is set here, the
+     * for 'edit' access on 'project'. However, if an alias is set here, the
      * securitymanger searches for 'edit' on that alias.
      * @access private
      * @var String

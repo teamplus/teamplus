@@ -91,7 +91,7 @@ class organization extends atkNode
     $this->add(new atkManyToOneRelation("assigned_to","employee.employee",AF_SEARCHABLE|AF_HIDE_ADD|AF_HIDE_LIST));
     $this->add(new atkTextAttribute("remark", TEXT_LARGE, AF_HIDE_LIST|AF_HIDE_ADD));
     $this->add(new atkOneToManyRelation("contactperson","organization.contact","company",AF_HIDE_LIST),"contacts");
-    $this->add(new atkTabbedPane("events_subtabs",array("activeeventss"=>array("eventss"),"archivedeventss"=>array("archivedeventss")),AF_HIDE_ADD|AF_NO_LABEL),"events");
+    $this->add(new atkTabbedPane("project_subtabs",array("activeprojects"=>array("projects"),"archivedprojects"=>array("archivedprojects")),AF_HIDE_ADD|AF_NO_LABEL),"project");
 
     $this->add(new atkTabbedPane('contract_subtabs', array('activecontracts'=>array('contracts'),'archivedcontracts'=>array('archivedcontracts')), AF_HIDE_LIST|AF_NO_LABEL|AF_HIDE_ADD), 'contracts');
     $activeContracts = &$this->add(new atkOneToManyRelation("contracts","organization.contracts","customer",AF_HIDE_LIST));
@@ -99,10 +99,10 @@ class organization extends atkNode
     $archivedContracts = &$this->add(new atkOneToManyRelation("archivedcontracts","organization.contracts","customer",AF_HIDE_LIST));
     $archivedContracts->addDestinationFilter("contract.status!='active'");
 
-    $eventsRelatie = new atkOneToManyRelation("eventss", "events.events", "customer",AF_HIDE_LIST|AF_HIDE_ADD);
-    $eventsRelatie->addDestinationFilter("events.status='active'");
-    $this->add($eventsRelatie);
-    $this->add(new atkParserAttribute("archivedeventss", "see_below", AF_HIDE_LIST|AF_HIDE_ADD));
+    $projectRelatie = new atkOneToManyRelation("projects", "project.project", "customer",AF_HIDE_LIST|AF_HIDE_ADD);
+    $projectRelatie->addDestinationFilter("project.status='active'");
+    $this->add($projectRelatie);
+    $this->add(new atkParserAttribute("archivedprojects", "see_below", AF_HIDE_LIST|AF_HIDE_ADD));
     //$this->add(new atkTabbedPane("extra_subtabs",array("quotations"=>array("quotations")),AF_HIDE_ADD|AF_NO_LABEL),"extra");
     $this->add(new atkOneToManyRelation("former_names","crm.former_name","account",AF_HIDE_LIST|AF_HIDE_ADD),"extra");
     $this->add(new atkOneToManyRelation("relation","crm.organization_relation","account",AF_HIDE_LIST|AF_HIDE_ADD),"extra");
@@ -209,7 +209,7 @@ class organization extends atkNode
   function action_export(&$handler)
   {
     // Some attributes are not usefull in exports
-    foreach(array("contactperson", "contracts", 'archivedcontracts', "eventss", "archivedeventss", "vcard", "document") as $attrname)
+    foreach(array("contactperson", "contracts", 'archivedcontracts', "projects", "archivedprojects", "vcard", "document") as $attrname)
     {
       $attr = &$this->getAttribute($attrname);
       $attr->addFlag(AF_HIDE);
@@ -242,25 +242,25 @@ class organization extends atkNode
      return "http://".$org;
   }
 
-  function archivedeventss_edit($record)
+  function archivedprojects_edit($record)
   {
     return $this->showProjects($record,"relation","archived");
   }
 
-  function archivedeventss_display($record)
+  function archivedprojects_display($record)
   {
     return $this->showProjects($record,"view","archived");
   }
 
   function showProjects($record, $mode,$status="active")
   {
-    $eventsnode = &atkGetNode("events.events");
-    $eventsnode->m_fuzzyFilters=array("events.status='$status'");
-    $recs = $eventsnode->selectDb("customer = ".$record["id"], "", "", $eventsnode->m_listExcludes);
+    $projectnode = &atkGetNode("project.project");
+    $projectnode->m_fuzzyFilters=array("project.status='$status'");
+    $recs = $projectnode->selectDb("customer = ".$record["id"], "", "", $projectnode->m_listExcludes);
     if (count($recs)>0)
     {
       $rl = &atknew("atk.recordlist.atkrecordlist");
-      return $rl->render($eventsnode, $recs, $eventsnode->defaultActions($mode), RL_NO_SEARCH|RL_NO_SORT);
+      return $rl->render($projectnode, $recs, $projectnode->defaultActions($mode), RL_NO_SEARCH|RL_NO_SORT);
     }
     return atktext("none");
   }

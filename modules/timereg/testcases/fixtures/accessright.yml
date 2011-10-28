@@ -391,35 +391,35 @@ accessright_98:
   action: edit
   role_id: 2
 accessright_99: 
-  node: notes.events_notes
+  node: notes.project_notes
   action: add
   role_id: 1
 accessright_100: 
-  node: notes.events_notes
+  node: notes.project_notes
   action: add
   role_id: 2
 accessright_101: 
-  node: notes.events_notes
+  node: notes.project_notes
   action: admin
   role_id: 1
 accessright_102: 
-  node: notes.events_notes
+  node: notes.project_notes
   action: admin
   role_id: 2
 accessright_103: 
-  node: notes.events_notes
+  node: notes.project_notes
   action: delete
   role_id: 1
 accessright_104: 
-  node: notes.events_notes
+  node: notes.project_notes
   action: delete
   role_id: 2
 accessright_105: 
-  node: notes.events_notes
+  node: notes.project_notes
   action: edit
   role_id: 1
 accessright_106: 
-  node: notes.events_notes
+  node: notes.project_notes
   action: edit
   role_id: 2
 accessright_107: 
@@ -559,287 +559,287 @@ accessright_140:
   action: edit
   role_id: 2
 accessright_141: 
-  node: events.activity
+  node: project.activity
   action: add
   role_id: 1
 accessright_142: 
-  node: events.activity
+  node: project.activity
   action: add
   role_id: 2
 accessright_143: 
-  node: events.activity
+  node: project.activity
   action: admin
   role_id: 1
 accessright_144: 
-  node: events.activity
+  node: project.activity
   action: admin
   role_id: 2
 accessright_145: 
-  node: events.activity
+  node: project.activity
   action: delete
   role_id: 1
 accessright_146: 
-  node: events.activity
+  node: project.activity
   action: delete
   role_id: 2
 accessright_147: 
-  node: events.activity
+  node: project.activity
   action: edit
   role_id: 1
 accessright_148: 
-  node: events.activity
+  node: project.activity
   action: edit
   role_id: 2
 accessright_149: 
-  node: events.activity
+  node: project.activity
   action: stats
   role_id: 1
 accessright_150: 
-  node: events.activity
+  node: project.activity
   action: stats
   role_id: 2
 accessright_151: 
-  node: events.deliverable
+  node: project.deliverable
   action: add
   role_id: 1
 accessright_152: 
-  node: events.deliverable
+  node: project.deliverable
   action: add
   role_id: 2
 accessright_153: 
-  node: events.deliverable
+  node: project.deliverable
   action: delete
   role_id: 1
 accessright_154: 
-  node: events.deliverable
+  node: project.deliverable
   action: delete
   role_id: 2
 accessright_155: 
-  node: events.deliverable
+  node: project.deliverable
   action: edit
   role_id: 1
 accessright_156: 
-  node: events.deliverable
+  node: project.deliverable
   action: edit
   role_id: 2
 accessright_157: 
-  node: events.mastergantt_colorconfig
+  node: project.mastergantt_colorconfig
   action: admin
   role_id: 1
 accessright_158: 
-  node: events.mastergantt_colorconfig
+  node: project.mastergantt_colorconfig
   action: admin
   role_id: 2
 accessright_159: 
-  node: events.mastergantt_colorconfig
+  node: project.mastergantt_colorconfig
   action: edit
   role_id: 1
 accessright_160: 
-  node: events.mastergantt_colorconfig
+  node: project.mastergantt_colorconfig
   action: edit
   role_id: 2
 accessright_161: 
-  node: events.phase
+  node: project.phase
   action: add
   role_id: 1
 accessright_162: 
-  node: events.phase
+  node: project.phase
   action: add
   role_id: 2
 accessright_163: 
-  node: events.phase
+  node: project.phase
   action: delete
   role_id: 1
 accessright_164: 
-  node: events.phase
+  node: project.phase
   action: delete
   role_id: 2
 accessright_165: 
-  node: events.phase
+  node: project.phase
   action: edit
   role_id: 1
 accessright_166: 
-  node: events.phase
+  node: project.phase
   action: edit
   role_id: 2
 accessright_167: 
-  node: events.events
+  node: project.project
   action: add
   role_id: 1
 accessright_168: 
-  node: events.events
+  node: project.project
   action: add
   role_id: 2
 accessright_169: 
-  node: events.events
+  node: project.project
   action: admin
   role_id: 1
 accessright_170: 
-  node: events.events
+  node: project.project
   action: admin
   role_id: 2
 accessright_171: 
-  node: events.events
-  action: any_events
+  node: project.project
+  action: any_project
   role_id: 1
 accessright_172: 
-  node: events.events
+  node: project.project
   action: changeabbreviation
   role_id: 1
 accessright_173: 
-  node: events.events
+  node: project.project
   action: changeabbreviation
   role_id: 2
 accessright_174: 
-  node: events.events
+  node: project.project
   action: delete
   role_id: 1
 accessright_175: 
-  node: events.events
+  node: project.project
   action: delete
   role_id: 2
 accessright_176: 
-  node: events.events
+  node: project.project
   action: edit
   role_id: 1
 accessright_177: 
-  node: events.events
+  node: project.project
   action: edit
   role_id: 2
 accessright_178: 
-  node: events.events
+  node: project.project
   action: initialplanning
   role_id: 1
 accessright_179: 
-  node: events.events
+  node: project.project
   action: initialplanning
   role_id: 2
 accessright_180: 
-  node: events.events
+  node: project.project
   action: planning
   role_id: 1
 accessright_181: 
-  node: events.events
+  node: project.project
   action: planning
   role_id: 2
 accessright_182: 
-  node: events.events
+  node: project.project
   action: stats
   role_id: 1
 accessright_183: 
-  node: events.events
+  node: project.project
   action: stats
   role_id: 2
 accessright_184: 
-  node: events.events
+  node: project.project
   action: tab_finance
   role_id: 1
 accessright_185: 
-  node: events.events
+  node: project.project
   action: tab_finance
   role_id: 2
 accessright_186: 
-  node: events.events
+  node: project.project
   action: tab_planning
   role_id: 1
 accessright_187: 
-  node: events.events
+  node: project.project
   action: tab_planning
   role_id: 2
 accessright_188: 
-  node: events.role
+  node: project.role
   action: add
   role_id: 1
 accessright_189: 
-  node: events.role
+  node: project.role
   action: add
   role_id: 2
 accessright_190: 
-  node: events.role
+  node: project.role
   action: admin
   role_id: 1
 accessright_191: 
-  node: events.role
+  node: project.role
   action: admin
   role_id: 2
 accessright_192: 
-  node: events.role
+  node: project.role
   action: delete
   role_id: 1
 accessright_193: 
-  node: events.role
+  node: project.role
   action: delete
   role_id: 2
 accessright_194: 
-  node: events.role
+  node: project.role
   action: edit
   role_id: 1
 accessright_195: 
-  node: events.role
+  node: project.role
   action: edit
   role_id: 2
 accessright_196: 
-  node: events.tpl_phase
+  node: project.tpl_phase
   action: add
   role_id: 1
 accessright_197: 
-  node: events.tpl_phase
+  node: project.tpl_phase
   action: add
   role_id: 2
 accessright_198: 
-  node: events.tpl_phase
+  node: project.tpl_phase
   action: admin
   role_id: 1
 accessright_199: 
-  node: events.tpl_phase
+  node: project.tpl_phase
   action: admin
   role_id: 2
 accessright_200: 
-  node: events.tpl_phase
+  node: project.tpl_phase
   action: delete
   role_id: 1
 accessright_201: 
-  node: events.tpl_phase
+  node: project.tpl_phase
   action: delete
   role_id: 2
 accessright_202: 
-  node: events.tpl_phase
+  node: project.tpl_phase
   action: edit
   role_id: 1
 accessright_203: 
-  node: events.tpl_phase
+  node: project.tpl_phase
   action: edit
   role_id: 2
 accessright_204: 
-  node: events.tpl_events
+  node: project.tpl_project
   action: add
   role_id: 1
 accessright_205: 
-  node: events.tpl_events
+  node: project.tpl_project
   action: add
   role_id: 2
 accessright_206: 
-  node: events.tpl_events
+  node: project.tpl_project
   action: admin
   role_id: 1
 accessright_207: 
-  node: events.tpl_events
+  node: project.tpl_project
   action: admin
   role_id: 2
 accessright_208: 
-  node: events.tpl_events
+  node: project.tpl_project
   action: delete
   role_id: 1
 accessright_209: 
-  node: events.tpl_events
+  node: project.tpl_project
   action: delete
   role_id: 2
 accessright_210: 
-  node: events.tpl_events
+  node: project.tpl_project
   action: edit
   role_id: 1
 accessright_211: 
-  node: events.tpl_events
+  node: project.tpl_project
   action: edit
   role_id: 2
 accessright_212: 
@@ -931,19 +931,19 @@ accessright_233:
   action: view_managed
   role_id: 2
 accessright_234: 
-  node: reports.eventsstatus
+  node: reports.projectstatus
   action: any_user
   role_id: 1
 accessright_235: 
-  node: reports.eventsstatus
+  node: reports.projectstatus
   action: any_user
   role_id: 2
 accessright_236: 
-  node: reports.eventsstatus
+  node: reports.projectstatus
   action: report
   role_id: 1
 accessright_237: 
-  node: reports.eventsstatus
+  node: reports.projectstatus
   action: report
   role_id: 2
 accessright_238: 
@@ -1108,7 +1108,7 @@ accessright_277:
   role_id: 2
 accessright_278: 
   node: timereg.hours
-  action: any_events
+  action: any_project
   role_id: 1
 accessright_279: 
   node: timereg.hours

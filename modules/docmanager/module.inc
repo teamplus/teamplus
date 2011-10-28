@@ -17,7 +17,7 @@
 
   // Add the docmanager to any modules specified in the $config_docmanagernodes array
   if(!is_array($modifiers)) $modifiers = array();
-  $modifiers = array_values(array_diff(array_merge($modifiers, atkconfig::get("docmanager","docmanagernodes", array())), array("events.events")));
+  $modifiers = array_values(array_diff(array_merge($modifiers, atkconfig::get("docmanager","docmanagernodes", array())), array("project.project")));
 
   /**
    * Module file for the menu items and security
@@ -68,7 +68,7 @@
     {
       $modifierfunctions = parent::getModifierFunctions($node);
       $docmanagernodes = atkconfig::get("docmanager","docmanagernodes", array());
-      if (in_array($node->atknodetype(), $docmanagernodes) && ($node->atknodetype() != "events.events"))
+      if (in_array($node->atknodetype(), $docmanagernodes) && ($node->atknodetype() != "project.project"))
         $modifierfunctions[] = "addDocumentManager";
       return $modifierfunctions;
     }

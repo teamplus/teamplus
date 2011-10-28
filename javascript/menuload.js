@@ -7,5 +7,5 @@ function menuload(menuurl, mainurl)
 function reloadProjects(el)
 {
   var id = el.options[el.selectedIndex].value;
-  window.location= "menu.php?atkmenutop=eventsmanagement&selectedevents="+id;
+  window.location= "menu.php?atkmenutop=projectmanagement&selectedproject="+id;
 }

@@ -1,33 +1,33 @@
 <?php
 
   /**
-   * Project extension with a custom action to remove the events from a contract.
+   * Project extension with a custom action to remove the project from a contract.
    *
    * @author Ivo Jansch <ivo@achievo.org>
    * @version $Revision: 2385 $
    *
-   * $Id: class.contract_events.inc 2385 2007-09-17 09:33:11Z guido $
+   * $Id: class.contract_project.inc 2385 2007-09-17 09:33:11Z guido $
    */
 
-  include_once(moduleDir("events")."class.events.inc"); // include original baseclass.
+  include_once(moduleDir("project")."class.project.inc"); // include original baseclass.
 
-  class contract_events extends events
+  class contract_project extends project
   {
-    function contract_events()
+    function contract_project()
     {
-      $this->events();
+      $this->project();
       $this->m_flags |= NF_NO_FILTER;;
-      $this->m_type = "contract_events";
+      $this->m_type = "contract_project";
       $statusattr = &$this->getAttribute("status");
       $statusattr->addFlag(AF_FORCE_LOAD);
       $customerattr = &$this->getAttribute("customer");
       $customerattr->setForceInsert(true);
 
-      // Anyone who may edit contracts, may remove a events from the deposit.
+      // Anyone who may edit contracts, may remove a project from the deposit.
       $this->m_securityMap["remove"] = "contracts.edit";
 
       // The rest of the actions has equal privileges to the original node.
-      $this->setSecurityAlias("events.events");
+      $this->setSecurityAlias("project.project");
 
       //clear parent filters.
       $this->m_fuzzyFilters = array();
@@ -35,14 +35,14 @@
     }
 
     /**
-     * Remove a events from a contract.
+     * Remove a project from a contract.
      */
     function action_remove(&$handler)
     {
-      if ($this->m_postvars["events_id"]!="")
+      if ($this->m_postvars["project_id"]!="")
       {
         $db = &atkGetDb();
-        $db->query("UPDATE events SET contract_id = NULL WHERE id = '".$this->m_postvars["events_id"]."'");
+        $db->query("UPDATE project SET contract_id = NULL WHERE id = '".$this->m_postvars["project_id"]."'");
       }
       $this->redirect();
     }
@@ -50,9 +50,9 @@
     function recordActions($record, &$actions, &$mraactions)
     {
     	$actions = array(); // Remove all default actions.
-      if ($this->allowed("remove", $record)) $actions["remove"] = dispatch_url($this->atkNodeType(), "remove", array("events_id"=>$record["id"]));
-      if ($this->allowed("view", $record)) $actions["view"] = dispatch_url("events.events", "view", array("atkselector"=>$this->primaryKey($record)));
-      if ($this->allowed("edit", $record)) $actions["edit"] = dispatch_url("events.events", "edit", array("atkselector"=>$this->primaryKey($record)));
+      if ($this->allowed("remove", $record)) $actions["remove"] = dispatch_url($this->atkNodeType(), "remove", array("project_id"=>$record["id"]));
+      if ($this->allowed("view", $record)) $actions["view"] = dispatch_url("project.project", "view", array("atkselector"=>$this->primaryKey($record)));
+      if ($this->allowed("edit", $record)) $actions["edit"] = dispatch_url("project.project", "edit", array("atkselector"=>$this->primaryKey($record)));
     }
 
     function initial_values()

@@ -1,8 +1,8 @@
 <?php
 
 include_once("achievotools.inc");
-useattrib("events.eventsmanytoonerelation");
-useattrib("events.eventsattrib");
+useattrib("project.projectmanytoonerelation");
+useattrib("project.projectattrib");
 useattrib("atkdateattribute");
 useattrib("atklistattribute");
 useattrib("atktextattribute");
@@ -14,7 +14,7 @@ useattrib("atknumberattribute");
 userelation("atkmanytoonerelation");
 atkimport("module.timereg.locking");
 atkimport("module.timereg.timeregutils");
-atkimport("module.events.utils.eventsutils");
+atkimport("module.project.utils.projectutils");
 atkimport("modules.utils.dateutil");
 
 /**
@@ -237,31 +237,31 @@ class hours extends atkNode
     // userid, even if it's not displayed on screen.
     $this->add(new atkManyToOneRelation("userid","employee.employeeselector", AF_HIDE|AF_FORCE_LOAD|AF_OBLIGATORY));
 
-    //phaseid must be added before the events id to make sure the join works
-    //we need the eventsid to sort on
-    $phase = &new atkManyToOneRelation("phaseid","events.phaseselector",AF_OBLIGATORY|AF_FORCE_LOAD);
-    $phase->setDestinationFilter("phase.eventsid='[eventsid.id]'");
-    $oneActivity = (eventsutils::getActivityCount() == 1);
+    //phaseid must be added before the project id to make sure the join works
+    //we need the projectid to sort on
+    $phase = &new atkManyToOneRelation("phaseid","project.phaseselector",AF_OBLIGATORY|AF_FORCE_LOAD);
+    $phase->setDestinationFilter("phase.projectid='[projectid.id]'");
+    $oneActivity = (projectutils::getActivityCount() == 1);
     if(!$oneActivity)
       $phase->addDependee("activityid");
     $this->add($phase,null, 30);
 
-    $events = &new eventsManyToOneRelation("eventsid","events.eventsselector",AF_OBLIGATORY|AF_FORCE_LOAD);
-    $events->addDependee("phaseid");
-    $events->setUserId($this->m_user);
+    $project = &new projectManyToOneRelation("projectid","project.projectselector",AF_OBLIGATORY|AF_FORCE_LOAD);
+    $project->addDependee("phaseid");
+    $project->setUserId($this->m_user);
 
     if(atkconfig::get("timereg","timereg_contact_link",false))
     {
-      $events->addDependee("contact_id");
+      $project->addDependee("contact_id");
     }
 
-    $this->add($events,null,20);
+    $this->add($project,null,20);
 
     if($oneActivity)
       $activity_flag = AF_HIDE|AF_FORCE_LOAD;
     else
       $activity_flag = AF_FORCE_LOAD;
-    $activity = &new atkManyToOneRelation("activityid","events.activity",AF_OBLIGATORY|$activity_flag);
+    $activity = &new atkManyToOneRelation("activityid","project.activity",AF_OBLIGATORY|$activity_flag);
     $this->add($activity);
 
     if(atkconfig::get("timereg","timereg_contact_link",false))
@@ -283,11 +283,11 @@ class hours extends atkNode
 
     $this->add(new atkDateAttribute("entrydate",AF_HIDE|AF_OBLIGATORY));
 /**
- * @todo: we need to order by eventsid.abbreviation, ATK does not include the
- * eventsid and phaseid in the selectDb so we FORCE_LOAD the eventsid
+ * @todo: we need to order by projectid.abbreviation, ATK does not include the
+ * projectid and phaseid in the selectDb so we FORCE_LOAD the projectid
  * and phaseid. This should actually be fixed in atk somehow.
  */
-    $this->setOrder("eventsid.abbreviation");
+    $this->setOrder("projectid.abbreviation");
 
     $this->setTable("hours","hoursbase");
     $this->addSecurityMap("mra_move", "edit");
@@ -307,7 +307,7 @@ class hours extends atkNode
     $filter = $attr->createFilter($record);
     if ($mode == 'add' || $mode == 'edit' || $mode == 'select')
     {
-      $activityids = eventsutils::getAvailableActivityIds($record["phaseid"]["id"]);
+      $activityids = projectutils::getAvailableActivityIds($record["phaseid"]["id"]);
       if (trim($filter) != "")
         $filter .= " AND ";
       if(count($activityids)>0)
@@ -423,7 +423,7 @@ class hours extends atkNode
                    );
 
     // Set an initial activityid if there's exactly one activity
-    if (eventsutils::getActivityCount() == 1) {
+    if (projectutils::getActivityCount() == 1) {
       $db = &atkGetDb();
       $result = $db->getrows("SELECT id FROM activity");
       $values["activityid"]["id"] = $result[0]["id"];
@@ -486,7 +486,7 @@ class hours extends atkNode
   }
 
   // If there is a $config_hours_confirm_save then Achievo will display it
-  // in a confirm box on the first timeregistration for the events
+  // in a confirm box on the first timeregistration for the project
   function action_save(&$handler)
   {
     $this->setTable("hoursbase");
@@ -529,7 +529,7 @@ class hours extends atkNode
    * Function needed to override standard behaviour of atk when using initial_values.
    * Normally initial values are only used if the form value is NOT YET present in
    * the m_postvars["atkformdata"]. Since atk stores attributes in atkformdata when
-   * performing an action (o.e. select a events and phase for registering hours)
+   * performing an action (o.e. select a project and phase for registering hours)
    * the initial_values are ignored.
    *
    * We override this behaviour by manually overriding the atkformdata value of activitydate.
@@ -749,7 +749,7 @@ class hours extends atkNode
     for ($i=0;$i<count($data);$i++)
     {
       $rec = $data[$i];
-      $key = $rec["eventsid"]["abbreviation"].": ".$rec["eventsid"]["name"]." - ".$rec["phaseid"]["name"];
+      $key = $rec["projectid"]["abbreviation"].": ".$rec["projectid"]["name"]." - ".$rec["phaseid"]["name"];
       $date = $rec["activitydate"]["year"]."-".$rec["activitydate"]["month"]."-".$rec["activitydate"]["day"];
       $time = $rec["time"];
       $week[$key][$date] += $time;
@@ -765,7 +765,7 @@ class hours extends atkNode
     $table = &atknew("atk.utils.atktablerenderer");
 
 
-    $weekdata[0][] = atktext("events")." - ".atktext("phase");
+    $weekdata[0][] = atktext("project")." - ".atktext("phase");
     for ($i=1;$i<=7;$i++)
     {
       if ($weekdates[$i]['date'] <= date("Y-m-d") || atkConfig::get("timereg","timereg_allowfuture", false))
@@ -1127,11 +1127,11 @@ class hours extends atkNode
   function validateActivityId(&$record)
   {
     // If no activities available, trigger an error:
-    if (eventsutils::getActivityCount() == 0) {
+    if (projectutils::getActivityCount() == 0) {
       triggerError($record, "activityid", "Please add one or more activities first");
     }
     else {
-      $obj = &atkGetNode("events.activity");
+      $obj = &atkGetNode("project.activity");
       $act = $obj->selectDb("id='".$record["activityid"]["id"]."'");
       if (count($act)==1)
       {
@@ -1163,8 +1163,8 @@ class hours extends atkNode
 
   function getHourSurveyColumns()
   {
-    $defaultcolumns = array("activitydate","userid","phaseid","eventsid","activityid","remark","time","functionlevel", "employer_id","entrydate");
-    if (moduleExists("billing")) $defaultcolumns[] = "billing_eventstypeid";
+    $defaultcolumns = array("activitydate","userid","phaseid","projectid","activityid","remark","time","functionlevel", "employer_id","entrydate");
+    if (moduleExists("billing")) $defaultcolumns[] = "billing_projecttypeid";
     $additionalcolumns = atkHarvestModules("getHourSurveyColumns");
     return array_merge($defaultcolumns, $additionalcolumns);
   }
@@ -1371,22 +1371,22 @@ class hours extends atkNode
   }
 
   /**
-   * Checks wether or not there are any timeregistrations on a particulair events
+   * Checks wether or not there are any timeregistrations on a particulair project
    * Depends on being called from action_save
-   * @return bool Wether or not it's the first timereg for the events
+   * @return bool Wether or not it's the first timereg for the project
    */
   function _isThisTheFirstTimeRegForThisProject()
   {
-    $phasenode =   &atkGetNode("events.phase");
+    $phasenode =   &atkGetNode("project.phase");
     $hoursnode =   &atkGetNode("timereg.hours");
     $record = $this->updateRecord();
     $user = getUser();
 
-    $excludelist = $this->_getExcludeListForNode($phasenode, array("id", "eventsid"));
+    $excludelist = $this->_getExcludeListForNode($phasenode, array("id", "projectid"));
 
-    $eventsid = (int)$record["eventsid"]["id"];
+    $projectid = (int)$record["projectid"]["id"];
 
-    $phases = $phasenode->selectDb($phasenode->m_table.".eventsid='$eventsid'",null,null,$excludelist);
+    $phases = $phasenode->selectDb($phasenode->m_table.".projectid='$projectid'",null,null,$excludelist);
 
     $inphase = array();
     foreach ($phases as $phase)
@@ -1397,7 +1397,7 @@ class hours extends atkNode
     $in = implode(",",$inphase);
     if ($in) $instr = "IN (".$in.")";
     $timeregcount = $hoursnode->countDb("{$hoursnode->m_table}.phaseid $instr AND {$hoursnode->m_table}.userid = '{$user['id']}'");
-    atkdebug("$timeregcount timeregistrations on this events by this user");
+    atkdebug("$timeregcount timeregistrations on this project by this user");
     if ($timeregcount>0)
       return false;
     else
@@ -1520,25 +1520,25 @@ class hours extends atkNode
 
   function contact_id_edit($record, $fieldprefix="", $mode="edit")
   {
-    $restrict = atkArrayNvl($record['eventsid'],"contact_restrict",0);
+    $restrict = atkArrayNvl($record['projectid'],"contact_restrict",0);
     $p_attrib = &$this->getAttribute("contact_id");
 
-    //events priority -  if events selected, we use select_contract restriction from events
+    //project priority -  if project selected, we use select_contract restriction from project
     if($restrict == '2')
     {
       $p_attrib->addDestinationFilter("person.eligible='1'");
     }
     elseif($restrict == '1')
     {
-      $node = &atkGetNode("events.events");
-      list($customer) = $node->selectDb("events.id='".$record['eventsid']['id']."'","","","",array("customer"),"admin");
+      $node = &atkGetNode("project.project");
+      list($customer) = $node->selectDb("project.id='".$record['projectid']['id']."'","","","",array("customer"),"admin");
       if ($customer['customer']['id'])
       {
             $p_attrib->addDestinationFilter("person.company='{$customer['customer']['id']}'");
       }
       else  $p_attrib->addDestinationFilter("0");
     }
-    //if no events, but organization set, we use organization as filter for contact
+    //if no project, but organization set, we use organization as filter for contact
     elseif($restrict == '0' && atkArrayNvl($record['organizationid'],'id', false))
     {
       $p_attrib->addDestinationFilter("person.company='{$record['organizationid']['id']}'");

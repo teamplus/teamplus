@@ -1,6 +1,6 @@
 <?php
   /**
-   * contacteventsslist node class file
+   * contactprojectslist node class file
    *
    * @package achievo
    * @subpackage modules
@@ -12,7 +12,7 @@
    * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License 2
    *
    * @version $Revision: 1803 $
-   * $Id: class.contacteventsslist.inc 1803 2006-08-01 13:25:26Z guido $
+   * $Id: class.contactprojectslist.inc 1803 2006-08-01 13:25:26Z guido $
    */
 
   /**
@@ -21,28 +21,28 @@
   useattrib("atkdummyattribute");
 
   /**
-   * The node class for contacteventsslist.
+   * The node class for contactprojectslist.
    *
    * @author guido <guido@ibuildings.nl>
    * @package achievo
    * @subpackage modules
    */
-  class contacteventsslist extends atkDummyAttribute
+  class contactprojectslist extends atkDummyAttribute
   {
 
     var $m_status = "active";
 
     /**
-     * contacteventsslist constructor
+     * contactprojectslist constructor
      */
-    function contacteventsslist($name, $status="active", $flags=0)
+    function contactprojectslist($name, $status="active", $flags=0)
     {
       $this->atkDummyAttribute($name, "", $flags|AF_DUMMY_SHOW_LABEL);
       $this->m_status = $status;
     }
 
     /**
-     * Returns a html recordlist of eventss
+     * Returns a html recordlist of projects
      *
      * @param unknown_type $record
      * @param unknown_type $mode
@@ -50,15 +50,15 @@
      */
     function showProjects($record, $mode)
     {
-      $eventsnode = &atkGetNode("events.events");
-      useattrib("events.filtereventsbycontactattrib");
-      $eventsnode->add(new filterProjectByContactAttrib($record["id"]));
-      $eventsnode->m_fuzzyFilters=array("events.status='".$this->m_status."'");
-      $recs = $eventsnode->selectDb("", "", "", $eventsnode->m_listExcludes);
+      $projectnode = &atkGetNode("project.project");
+      useattrib("project.filterprojectbycontactattrib");
+      $projectnode->add(new filterProjectByContactAttrib($record["id"]));
+      $projectnode->m_fuzzyFilters=array("project.status='".$this->m_status."'");
+      $recs = $projectnode->selectDb("", "", "", $projectnode->m_listExcludes);
       if (count($recs)>0)
       {
         $rl = &atknew("atk.recordlist.atkrecordlist");
-        return $rl->render($eventsnode, $recs, $eventsnode->defaultActions($mode), RL_NO_SEARCH|RL_NO_SORT);
+        return $rl->render($projectnode, $recs, $projectnode->defaultActions($mode), RL_NO_SEARCH|RL_NO_SORT);
       }
       return atktext("none");
     }

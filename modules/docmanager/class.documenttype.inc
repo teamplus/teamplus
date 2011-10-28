@@ -4,7 +4,7 @@
    * Detailed copyright and licensing information can be found
    * in the doc/COPYRIGHT and doc/LICENSE files which should be
    * included in the distribution.
-   * eventstpl_doctype node class file
+   * projecttpl_doctype node class file
    *
    * @package achievo
    * @subpackage docmanager
@@ -40,7 +40,7 @@
       $this->add(new documentFileAttribute("template", atkconfig::get("docmanager","docmanager_doctypetemplatepath", moduledir("docmanager") . "doctypetemplates/"), atkconfig::get("docmanager","docmanager_localdocumenttypepath"), false, AF_OBLIGATORY));
 
       $nodes = atkconfig::get("docmanager","docmanagernodes", array());
-      $nodes[] = "events.events_personcontact";
+      $nodes[] = "project.project_personcontact";
       $nodetranslations = array();
       foreach ($nodes as $node)
       {

@@ -125,11 +125,11 @@
   //            TIME REGISTRATION
   // -------------------------------------------
 
-  // The number of eventss/phases to show in the 'recent eventss/phases'
+  // The number of projects/phases to show in the 'recent projects/phases'
   // dropdown. Note: The more you specify here, the slower time registration
   // and planning gets (due to some javascript issues).
   //
-  $config_numberofrecenteventss = 10;
+  $config_numberofrecentprojects = 10;
 
   // The ammount of time that a user can book on a day before it is
   // considered overtime. (visualization only, true overtime is
@@ -188,27 +188,27 @@
   // -------------------------------------------
   //             PROJECT MODULE
   // -------------------------------------------
-  // This variable indicated whether contacts in the events module are
+  // This variable indicated whether contacts in the project module are
   // obligatory
-  $config_events_contact_obligatory = false;
+  $config_project_contact_obligatory = false;
 
-  // Use autocompletion for events selection?
+  // Use autocompletion for project selection?
   //
-  $config_events_selection_autocomplete = false;
+  $config_project_selection_autocomplete = false;
 
   // Fill this config with a path relative to the achievo directory.
-  // When you add a events the skel will be copied to the destionation directory
+  // When you add a project the skel will be copied to the destionation directory
   // also a path relative to the achievo directory. And sends a mail when the skel
   // is copied.
   // To disable this feature leave the dir_skel and dir_destination configs empty.
   // See also atk/utils/class.atkfileutils.inc function atkCopyDirRec
-  $config_events_dir_skel = '';
-  $config_events_dir_destination = '';
-  // You can specify which field of the events node you want to use for the
+  $config_project_dir_skel = '';
+  $config_project_dir_destination = '';
+  // You can specify which field of the project node you want to use for the
   // directoryname.
-  $config_events_dir_name_template = '[abbreviation]';
-  $config_events_formatmail = 'html';
-  $config_events_sendto = 'sendto@domein.nl';
+  $config_project_dir_name_template = '[abbreviation]';
+  $config_project_formatmail = 'html';
+  $config_project_sendto = 'sendto@domein.nl';
 
   // -------------------------------------------
   //             PIM MODULE
@@ -225,7 +225,7 @@
   // -------------------------------------------
   // If you a docmanager to other nodes add the node and file location here
   $config_docmanageroptions = array(
-        "events.events"=>array("dir"=>"./documents/events/", "url"=>"documents/events/"),
+        "project.project"=>array("dir"=>"./documents/project/", "url"=>"documents/project/"),
         "quotation.quotation"=>array("dir"=>"./documents/quotations/", "url"=>"documents/quotations/"),
         );
 

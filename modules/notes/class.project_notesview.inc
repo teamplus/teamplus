@@ -12,7 +12,7 @@
  * @license http://www.achievo.org/licensing Achievo Open Source License
  *
  * @version $Revision: 5052 $
- * $Id: class.events_notesview.inc 5052 2008-06-23 21:18:19Z sandy $
+ * $Id: class.project_notesview.inc 5052 2008-06-23 21:18:19Z sandy $
  */
 
 userelation("atkmanytoonerelation");
@@ -22,34 +22,34 @@ useattrib("atkdateattribute");
 useattrib("atknumberattribute");
 
 /**
- * Class for managing events notes in view mode
+ * Class for managing project notes in view mode
  * @package achievo
  * @subpackage notes
  */
-class events_notesview extends atkNode
+class project_notesview extends atkNode
 {
   /**
    * Constructor
    */
-  function events_notesview()
+  function project_notesview()
   {
     global $ATK_VARS;
 
-    $this->atkNode("events_notesview",NF_NO_ADD|NF_NO_DELETE);
+    $this->atkNode("project_notesview",NF_NO_ADD|NF_NO_DELETE);
 
     $this->add(new atkNumberAttribute("id"                                , AF_AUTOKEY));
     $this->add(new atkAttribute("name"                              , AF_READONLY));
     $this->add(new atkManyToOneRelation("coordinator","employee.employee", AF_READONLY|AF_HIDE_LIST));
     $this->add(new atkTextAttribute("description" ,TEXT_LARGE, AF_READONLY));
     $this->add(new atkDateAttribute("startdate","","",0,0 , AF_READONLY|AF_HIDE_LIST));
-    $this->add(new atkOneToManyRelation("notes","notes.events_notes","eventsid", AF_HIDE_LIST));
+    $this->add(new atkOneToManyRelation("notes","notes.project_notes","projectid", AF_HIDE_LIST));
 
-    $this->addFilter("events.status","active");
-    $this->setTable("events","events");
+    $this->addFilter("project.status","active");
+    $this->setTable("project","project");
     $this->setOrder("name");
-    $this->setSecurityAlias("notes.events_notes");
+    $this->setSecurityAlias("notes.project_notes");
 
-    atkdebug("events::events()");
+    atkdebug("project::project()");
   }
 
   /**
@@ -62,7 +62,7 @@ class events_notesview extends atkNode
   }
 
   /**
-   * Override admina action, if user doens't have any events right
+   * Override admina action, if user doens't have any project right
    * add an filter
    *
    * @param object $handler Handler
@@ -71,10 +71,10 @@ class events_notesview extends atkNode
   function action_admin(&$handler)
   {
     // Access control
-    if (!$this->allowed("any_events"))
+    if (!$this->allowed("any_project"))
     {
       $user = getUser();
-      $this->addFilter("events.coordinator=".$user["id"]);
+      $this->addFilter("project.coordinator=".$user["id"]);
     }
     return $handler->action_admin();
   }

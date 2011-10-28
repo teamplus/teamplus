@@ -25,7 +25,7 @@
    * modulename   module name
    *
    * Example:
-   * {atkmoduledir modulename="events"}
+   * {atkmoduledir modulename="project"}
    *
    * @author Yury Golovnya <yury@achievo.org>
    *

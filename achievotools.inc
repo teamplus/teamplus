@@ -1,14 +1,14 @@
 <?php
 
   /**
-   * Add a selected events to the session variable.
+   * Add a selected project to the session variable.
    * If the session variable is empty, it is filled with
-   * the eventss the user has recently booked on.
+   * the projects the user has recently booked on.
    */
 
-  global $g_eventsnamesize; // must declare global. this piece of code might
+  global $g_projectnamesize; // must declare global. this piece of code might
                              // be executed somewhere in a local function scope.
-  $g_eventsnamesize = 20;
+  $g_projectnamesize = 20;
 
   /**
    * Return the Achievo version number.
@@ -90,7 +90,7 @@
 
   function updateSelectedProjects()
   {
-    global $g_sessionManager, $g_eventsnamesize;
+    global $g_sessionManager, $g_projectnamesize;
 
     atkdebug("updateSelectedProject");
     $prj = array();
@@ -98,7 +98,7 @@
     $session = &atkSessionManager::getSession();
     $prj =  $g_sessionManager->getValue("selectedprj","globals");
 
-    //If session var is empty fill with recent eventss
+    //If session var is empty fill with recent projects
     if (count($prj) == 0)
     {
       $prj = getRecentProjects();
@@ -109,17 +109,17 @@
     //when it finds a value in $GLOBALS
     //$_REQUEST['atkselector'] = "";
 
- //Check if selected events already exists in session var
+ //Check if selected project already exists in session var
     $atkselect = $g_sessionManager->stackVar("atkselector");
 
     if (($atkselect != "") && isset($atkselect))
     {
-       $eventsid = sscanf($atkselect, "events.id='%d'");
-       $prjId = $eventsid[0];
+       $projectid = sscanf($atkselect, "project.id='%d'");
+       $prjId = $projectid[0];
     }
     else
     {
-        $atkselect = $g_sessionManager->stackVar("selectedeventsid");
+        $atkselect = $g_sessionManager->stackVar("selectedprojectid");
         if (($atkselect != "") && isset($atkselect))
         {
           $prjId = $atkselect;
@@ -130,9 +130,9 @@
         }
     }
 
-    // When no events is selected in the dropdown list
-    // and the user select's a events we need to check
-    // if the events is in the list. If not
+    // When no project is selected in the dropdown list
+    // and the user select's a project we need to check
+    // if the project is in the list. If not
     // we need to get it's name, so it can be displayed
     // in the dropdown list
     if ($prjId != 0)
@@ -140,30 +140,30 @@
        $found = FALSE;
        foreach( $prj as $cur)
        {
-         if ($cur['eventsid']  == $prjId) $found = TRUE;
+         if ($cur['projectid']  == $prjId) $found = TRUE;
        }
-       if (!$found)  //add events to dropdown list
+       if (!$found)  //add project to dropdown list
        {
 
          $selectedPrj = Array();
-         $selectedPrj['eventsid'] = $prjId;
+         $selectedPrj['projectid'] = $prjId;
 
-         //Get events name
+         //Get project name
          $db = &atkGetDb();
-         $query = "SELECT events.abbreviation as eventscode, events.name as eventsname FROM events WHERE id='".$selectedPrj['eventsid']."'";
+         $query = "SELECT project.abbreviation as projectcode, project.name as projectname FROM project WHERE id='".$selectedPrj['projectid']."'";
          $arr = $db->getrows($query);
-         $eventsdescriptor = empty($arr[0]['eventscode']) ? $arr[0]['eventsname'] : ($arr[0]['eventscode'] . ": " . $arr[0]['eventsname']);
-         if (atk_strlen($eventsdescriptor) > $g_eventsnamesize)
+         $projectdescriptor = empty($arr[0]['projectcode']) ? $arr[0]['projectname'] : ($arr[0]['projectcode'] . ": " . $arr[0]['projectname']);
+         if (atk_strlen($projectdescriptor) > $g_projectnamesize)
          {
-           $selectedPrj['eventsname'] = atk_substr($eventsdescriptor, 0, $g_eventsnamesize-2).".."; //update because of phases
+           $selectedPrj['projectname'] = atk_substr($projectdescriptor, 0, $g_projectnamesize-2).".."; //update because of phases
          }
          else
          {
-           $selectedPrj['eventsname'] = $eventsdescriptor; //update because of phases
+           $selectedPrj['projectname'] = $projectdescriptor; //update because of phases
          }
 
-         //Check maximum number of eventss in session var
-         if (count($prj) >= atkconfig("numberofrecenteventss"))
+         //Check maximum number of projects in session var
+         if (count($prj) >= atkconfig("numberofrecentprojects"))
          {
            array_shift($prj); // remove the first
            $prj[count($prj)-1] = $selectedPrj;
@@ -176,7 +176,7 @@
        }
 
        //Reload the menu frame by creating javascript
-       $menu_url = session_url("menu.php?atkmenutop=eventsmanagement&selectedevents=".$prjId, SESSION_DEFAULT);
+       $menu_url = session_url("menu.php?atkmenutop=projectmanagement&selectedproject=".$prjId, SESSION_DEFAULT);
        $script = "var newlocation=\"$menu_url\";
                   var oldlocation=parent.menu.location.toString();
                   if (oldlocation.indexOf(newlocation) == -1) {parent.menu.location = newlocation;}";
@@ -191,24 +191,24 @@
   }
 
   /**
-   * Get the eventss the user recently booked hours on
-   * @return array with recently used eventss
+   * Get the projects the user recently booked hours on
+   * @return array with recently used projects
    */
   function getRecentProjects()
   {
-    global $g_eventsnamesize;
+    global $g_projectnamesize;
     $db = &atkGetDb();
 
     $userid = atkArrayNvl(getUser(), "id");
 
-    $query = "SELECT DISTINCT events.abbreviation as eventscode, events.name as eventsname, events.id as eventsid ";
-    $query.= "FROM events,phase,hours ";
+    $query = "SELECT DISTINCT project.abbreviation as projectcode, project.name as projectname, project.id as projectid ";
+    $query.= "FROM project,phase,hours ";
     $query.= "WHERE phase.id=hours.phaseid ";
     if (!empty($userid)) $query .= "AND userid='$userid' ";
     $query.= "AND phase.status='active' ";
-    $query.= "AND events.status='active' ";
-    $query.= "AND phase.eventsid=events.id ";
-    $query.= "ORDER BY eventscode, eventsname";
+    $query.= "AND project.status='active' ";
+    $query.= "AND phase.projectid=project.id ";
+    $query.= "ORDER BY projectcode, projectname";
 
     $arr = $db->getrows($query,'0','100');
 
@@ -220,14 +220,14 @@
     $alreadyhad = array();
     for ($i=0, $_i=count($arr); $i<$_i;$i++)
     {
-      if (!in_array($arr[$i]['eventsid'], $alreadyhad))
+      if (!in_array($arr[$i]['projectid'], $alreadyhad))
       {
-        $eventsid = $arr[$i]['eventsid'];
-        $eventsdescriptor = empty($arr[$i]['eventscode']) ? $arr[$i]['eventsname'] : ($arr[$i]['eventscode'] . ": " . $arr[$i]['eventsname']);
-        if (atk_strlen($eventsdescriptor) > $g_eventsnamesize)
-          $eventsdescriptor = atk_substr($eventsdescriptor, 0, $g_eventsnamesize-2).".."; //update because of phases
-        $newarr[] = array("eventsid"=>$eventsid, "eventsname"=>$eventsdescriptor);
-        $alreadyhad[] = $eventsid;
+        $projectid = $arr[$i]['projectid'];
+        $projectdescriptor = empty($arr[$i]['projectcode']) ? $arr[$i]['projectname'] : ($arr[$i]['projectcode'] . ": " . $arr[$i]['projectname']);
+        if (atk_strlen($projectdescriptor) > $g_projectnamesize)
+          $projectdescriptor = atk_substr($projectdescriptor, 0, $g_projectnamesize-2).".."; //update because of phases
+        $newarr[] = array("projectid"=>$projectid, "projectname"=>$projectdescriptor);
+        $alreadyhad[] = $projectid;
       }
     }
     return $newarr;

@@ -47,7 +47,7 @@ class todo extends atkNode
 
     $this->add(new atkNumberAttribute("id"                   , AF_AUTOKEY));
     $this->add(new atkManyToOneRelation("owner", "employee.employee", AF_READONLY|AF_HIDE|AF_OBLIGATORY));
-    $this->add(new atkManyToOneRelation("eventsid"    , "events.events",AF_SEARCHABLE|AF_LARGE));
+    $this->add(new atkManyToOneRelation("projectid"    , "project.project",AF_SEARCHABLE|AF_LARGE));
     $this->add(new atkManyToOneRelation("contactid"    , "organization.contact",AF_SEARCHABLE|AF_LARGE));
     $this->add(new atkAttribute("title"                , AF_OBLIGATORY, 50));
     $p_attr = &$this->add(new atkManyToOneRelation("assigned_to"  , "employee.employee", AF_SEARCHABLE));
@@ -396,18 +396,18 @@ class todo extends atkNode
   function postAdd($rec)
   {
    $db = &atkGetDb();
-   // obtain some events info
+   // obtain some project info
    $assignTo = $rec["assigned_to"]["id"];
    $assigner = $rec["owner"]["id"];
-   $pid      = $rec["eventsid"]["id"];
+   $pid      = $rec["projectid"]["id"];
 
-   // get events name
-   $events="";
+   // get project name
+   $project="";
    if($pid!="")
    {
-     $q       = "SELECT name FROM events WHERE id='$pid'";
+     $q       = "SELECT name FROM project WHERE id='$pid'";
      $r       = $db->getRows($q);
-     $events = $r[0]["name"];
+     $project = $r[0]["name"];
    }
 
    // now get her/his email address
@@ -421,7 +421,7 @@ class todo extends atkNode
    $body.= $this->text("description").": \n".$rec["description"]."\n\n";
    $body.= $this->text("priority").": ".$this->prioName[$rec["priority"]-1]."\n";
    $body.= $this->text("status").": ".$this->m_attribList["status"]->display($rec)."\n";
-   if ($events!="") $body.= $this->text("events").": ".$events."\n";
+   if ($project!="") $body.= $this->text("project").": ".$project."\n";
    $body.= $this->text("duedate").": ".$this->m_attribList["duedate"]->display($rec)."\n";
 
    $body.= "\n";
@@ -489,22 +489,22 @@ class todo extends atkNode
                WHERE id IN('$owner','".$g_user["id"]."','$newassign','$oldassign')";
      $db = &atkGetDb();
      $emails    = $db->getrows($query);
-     $pid  = $rec["eventsid"]["id"];
-     // get events name
-     $events="";
+     $pid  = $rec["projectid"]["id"];
+     // get project name
+     $project="";
 
      if($pid!="")
      {
-       $query = "SELECT name FROM events WHERE id='$pid'";
+       $query = "SELECT name FROM project WHERE id='$pid'";
        $res   = $db->getrows($query);
-       $events = $res[0]["name"];
+       $project = $res[0]["name"];
      }
 
      $body = $this->text("todo").": ".$rec["title"]."\n";
      $body.= $this->text("description").": \n".$rec["description"]."\n\n";
      $body.= $this->text("priority").": ".$this->prioName[$rec["priority"]-1]."\n";
      $body.= $this->text("status").": ".$this->m_attribList["status"]->display($rec)."\n";
-     if ($events!="") $body.= $this->text("events").": ".$events."\n";
+     if ($project!="") $body.= $this->text("project").": ".$project."\n";
      $body.= $this->text("duedate").": ".$this->m_attribList["duedate"]->display($rec)."\n";
 
      $body.= "\n";

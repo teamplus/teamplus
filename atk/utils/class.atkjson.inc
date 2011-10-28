@@ -25,7 +25,7 @@
    *
    * More information:
    * - http://pear.php.net/pepr/pepr-proposal-show.php?id=198
-   * - http://www.aurore.net/eventss/php-json/
+   * - http://www.aurore.net/projects/php-json/
    *
    * JSON (JavaScript Object Notation) is a lightweight data-interchange
    * format. It is easy for humans to read and write. It is easy for machines

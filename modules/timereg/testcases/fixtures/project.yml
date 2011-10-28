@@ -1,10 +1,10 @@
-events_1: 
+project_1: 
   id: 20
   abbreviation: team1
   name: include to team
-  events_category: 
+  project_category: 
   coordinator: 1
-  master_events: 
+  master_project: 
   contract_id: 
   description: 
   quotation_number: 
@@ -16,13 +16,13 @@ events_1:
   startdate: 2008-02-26
   enddate: 2009-02-26
   template: 1
-events_2: 
+project_2: 
   id: 16
   abbreviation: non-active
   name: non-active
-  events_category: 
+  project_category: 
   coordinator: 1
-  master_events: 
+  master_project: 
   contract_id: 
   description: 
   quotation_number: 
@@ -34,13 +34,13 @@ events_2:
   startdate: 2008-02-26
   enddate: 2009-02-26
   template: 1
-events_3: 
+project_3: 
   id: 17
   abbreviation: archive
   name: archive
-  events_category: 
+  project_category: 
   coordinator: 1
-  master_events: 
+  master_project: 
   contract_id: 
   description: 
   quotation_number: 
@@ -52,13 +52,13 @@ events_3:
   startdate: 2008-02-26
   enddate: 2009-02-26
   template: 1
-events_4: 
+project_4: 
   id: 18
   abbreviation: team
   name: teammember only
-  events_category: 
+  project_category: 
   coordinator: 1
-  master_events: 
+  master_project: 
   contract_id: 
   description: 
   quotation_number: 
@@ -70,13 +70,13 @@ events_4:
   startdate: 2008-02-26
   enddate: 2009-02-26
   template: 1
-events_5: 
+project_5: 
   id: 19
   abbreviation: all_user
   name: all_user
-  events_category: 
+  project_category: 
   coordinator: 1
-  master_events: 
+  master_project: 
   contract_id: 
   description: 
   quotation_number: 
@@ -88,13 +88,13 @@ events_5:
   startdate: 2008-02-26
   enddate: 2009-02-26
   template: 1
-events_6: 
+project_6: 
   id: 21
   abbreviation: 
   name: pr1
-  events_category: 
+  project_category: 
   coordinator: 1
-  master_events: 
+  master_project: 
   contract_id: 
   description: 
   quotation_number: 
@@ -106,13 +106,13 @@ events_6:
   startdate: 2008-03-02
   enddate: 2009-03-02
   template: 1
-events_7: 
+project_7: 
   id: 22
   abbreviation: 
   name: pr2
-  events_category: 
+  project_category: 
   coordinator: 1
-  master_events: 
+  master_project: 
   contract_id: 
   description: 
   quotation_number: 
@@ -124,13 +124,13 @@ events_7:
   startdate: 2008-03-02
   enddate: 2009-03-02
   template: 1
-events_8: 
+project_8: 
   id: 23
   abbreviation: 
   name: pr3
-  events_category: 
+  project_category: 
   coordinator: 1
-  master_events: 
+  master_project: 
   contract_id: 
   description: 
   quotation_number: 
@@ -142,13 +142,13 @@ events_8:
   startdate: 2008-03-02
   enddate: 2009-03-02
   template: 1
-events_9: 
+project_9: 
   id: 24
   abbreviation: 
   name: pr4
-  events_category: 
+  project_category: 
   coordinator: 1
-  master_events: 
+  master_project: 
   contract_id: 
   description: 
   quotation_number: 
@@ -160,13 +160,13 @@ events_9:
   startdate: 2008-03-02
   enddate: 2009-03-02
   template: 1
-events_10: 
+project_10: 
   id: 25
   abbreviation: 
   name: pr5
-  events_category: 
+  project_category: 
   coordinator: 1
-  master_events: 
+  master_project: 
   contract_id: 
   description: 
   quotation_number: 
@@ -178,13 +178,13 @@ events_10:
   startdate: 2008-03-02
   enddate: 2009-03-02
   template: 1
-events_11: 
+project_11: 
   id: 26
   abbreviation: 
   name: pr6
-  events_category: 
+  project_category: 
   coordinator: 1
-  master_events: 
+  master_project: 
   contract_id: 
   description: 
   quotation_number: 
@@ -196,13 +196,13 @@ events_11:
   startdate: 2008-03-02
   enddate: 2009-03-02
   template: 1
-events_12: 
+project_12: 
   id: 27
   abbreviation: 
   name: pr7
-  events_category: 
+  project_category: 
   coordinator: 1
-  master_events: 
+  master_project: 
   contract_id: 
   description: 
   quotation_number: 
@@ -214,13 +214,13 @@ events_12:
   startdate: 2008-03-02
   enddate: 2009-03-02
   template: 1
-events_13: 
+project_13: 
   id: 28
   abbreviation: 
   name: pr8
-  events_category: 
+  project_category: 
   coordinator: 1
-  master_events: 
+  master_project: 
   contract_id: 
   description: 
   quotation_number: 
@@ -232,13 +232,13 @@ events_13:
   startdate: 2008-03-02
   enddate: 2009-03-02
   template: 1
-events_14: 
+project_14: 
   id: 29
   abbreviation: 
   name: pr9
-  events_category: 
+  project_category: 
   coordinator: 1
-  master_events: 
+  master_project: 
   contract_id: 
   description: 
   quotation_number: 
@@ -250,13 +250,13 @@ events_14:
   startdate: 2008-03-02
   enddate: 2009-03-02
   template: 1
-events_15: 
+project_15: 
   id: 30
   abbreviation: 
   name: pr10
-  events_category: 
+  project_category: 
   coordinator: 1
-  master_events: 
+  master_project: 
   contract_id: 
   description: 
   quotation_number: 

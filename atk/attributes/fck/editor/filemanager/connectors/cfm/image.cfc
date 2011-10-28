@@ -4,7 +4,7 @@
 
 	Related Web Sites:
 	- http://www.opensourcecf.com/imagecfc (home page)
-	- http://www.cfopen.org/eventss/imagecfc (events page)
+	- http://www.cfopen.org/projects/imagecfc (project page)
 
 	LICENSE
 	-------

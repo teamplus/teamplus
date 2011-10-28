@@ -47,7 +47,7 @@ Currently, the following scripts can be used from cron:
 
    This script sends an email reminder if someone did not block his week
    in the previous week. Both the person and the coordinator of his active
-   eventss will receive an email when a previous week wasn't blocked.
+   projects will receive an email when a previous week wasn't blocked.
 
    Suggested run frequency: weekly
    Suggested run time: Monday morning
@@ -76,11 +76,11 @@ Currently, the following scripts can be used from cron:
    Suggested run time: In mode 1: daily at 12:00
                        In mode 2: Monday morning
 
-* events.deliverables:
+* project.deliverables:
 
    The deliverables script checks for deliverables that have neared or
    reached the due date. If such a deliverable is found, an e-mail is sent
-   to the events coordinator of the events to which the deliverable
+   to the project coordinator of the project to which the deliverable
    belongs.
 
    Suggested run frequency: daily
@@ -94,17 +94,17 @@ Currently, the following scripts can be used from cron:
    The script checks if there are any active contracts that have expired. 
    If one or more of those contracts is found the status is changed to
    the 'archived' status. Then the script checks if there are any active
-   eventss linked to this contract and sets this status to 'nonactive'.
+   projects linked to this contract and sets this status to 'nonactive'.
    The script can be configured to check for an extra field for a specific 
    value in the contract table selecting expired contracts.
    
    Second:
    The script checks if there are any contracts that are not active (i.e.
    archived or nonactive), then the scripts checks if there are any
-   active eventss linked to this contract. If any, their status is also 
+   active projects linked to this contract. If any, their status is also 
    set to 'nonactive'.
    
-   The new status for the contract and events is configurable.
+   The new status for the contract and project is configurable.
    It is possible to send a warning mail to a specified user when the cronjob 
    performs such an action (configurable).   
    The configuration file can be found at achievo/configs/organization.inc.php.

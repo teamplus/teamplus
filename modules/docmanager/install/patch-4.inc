@@ -1,6 +1,6 @@
 <?php
 
   $setup->installNode("docmanager.documenttype");
-  $setup->installNode("docmanager.eventstpl_doctype");
+  $setup->installNode("docmanager.projecttpl_doctype");
 
 ?>

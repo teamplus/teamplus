@@ -1,6 +1,6 @@
 <?php
 
-  $setup->installNode("notes.events_notes");  
+  $setup->installNode("notes.project_notes");  
   $setup->setVersion(1);
 
 ?>

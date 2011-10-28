@@ -5,8 +5,8 @@ useattrib("atklistattribute");
 
 class hoursPDA extends hours
 {
-  var $m_eventss;
-  var $m_texteventss;
+  var $m_projects;
+  var $m_textprojects;
 
   var $m_phaseids;
   var $m_textphaseids;
@@ -18,27 +18,27 @@ class hoursPDA extends hours
 
   function _fillProject()
   {
-    global $g_events;
+    global $g_project;
 
-    $eventsnode = &atkGetNode("events.events");
-    $eventss = $eventsnode->selectDb(null,null,null,array("todos","notes","members","contacts"));
+    $projectnode = &atkGetNode("project.project");
+    $projects = $projectnode->selectDb(null,null,null,array("todos","notes","members","contacts"));
 
-    $this->m_eventss["EMPTY"] = $this->removeVarFromCurrentURL(array("g_events", "g_phase", "g_activity"));;
+    $this->m_projects["EMPTY"] = $this->removeVarFromCurrentURL(array("g_project", "g_phase", "g_activity"));;
 
-    foreach ($eventss as $events)
+    foreach ($projects as $project)
     {
-      if (!empty($events["phase"]))
+      if (!empty($project["phase"]))
       {
-        $this->m_texteventss[] = $events['name'];
-        $addedurl = $this->addVarToCurrentURL(array("g_events"=>$events["id"]));
+        $this->m_textprojects[] = $project['name'];
+        $addedurl = $this->addVarToCurrentURL(array("g_project"=>$project["id"]));
 
-        if ($events["id"]!==$g_events)
+        if ($project["id"]!==$g_project)
         {
-          $this->m_eventss[] = $this->removeVarFromCurrentURL(array("g_phase","g_activity"), $addedurl);
+          $this->m_projects[] = $this->removeVarFromCurrentURL(array("g_phase","g_activity"), $addedurl);
         }
         else
         {
-          $this->m_eventss[] = $this->addVarToCurrentURL(array("g_events"=>$events["id"]));
+          $this->m_projects[] = $this->addVarToCurrentURL(array("g_project"=>$project["id"]));
         }
       }
     }
@@ -46,11 +46,11 @@ class hoursPDA extends hours
 
   function _fillPhaseId()
   {
-    global $g_events, $g_phase;
+    global $g_project, $g_phase;
 
-    $phasenode = &atkGetNode("events.phase");
+    $phasenode = &atkGetNode("project.phase");
 
-    $phases = $phasenode->selectDb("eventsid.id='$g_events'");
+    $phases = $phasenode->selectDb("projectid.id='$g_project'");
 
     $this->m_phaseids["EMPTY"] = $this->removeVarFromCurrentURL(array("g_phase", "g_activity"));;
 
@@ -72,9 +72,9 @@ class hoursPDA extends hours
 
   function _fillActivityId()
   {
-    global $g_events, $g_phase, $g_activity;
+    global $g_project, $g_phase, $g_activity;
 
-    $activitynode = &atkGetNode("events.phase_activity");
+    $activitynode = &atkGetNode("project.phase_activity");
     $activities = $activitynode->selectDb("phase_activity.phaseid='$g_phase'");
 
     $this->m_activityids["EMPTY"] = $this->removeVarFromCurrentURL(array("g_activity"));
@@ -96,25 +96,25 @@ class hoursPDA extends hours
 
   function _presetGlobals()
   {
-    global $g_events, $g_activity, $g_phase, $ATK_VARS;
+    global $g_project, $g_activity, $g_phase, $ATK_VARS;
 
     if (($ATK_VARS["atkaction"] == "add" || $ATK_VARS["atkaction"] == "admin") && $ATK_VARS["atknodetype"]=="timereg.hourspda")
     {
       if (!$g_activity)
       {
-        if ($g_phase && $g_events)
+        if ($g_phase && $g_project)
         {
           if ($this->m_activityids[0])  header("Location: ".$this->m_activityids[0]);
         }
         else if (!$g_phase)
         {
-          if ($g_events)
+          if ($g_project)
           {
             if ($this->m_phaseids[0]) header("Location: ".$this->m_phaseids[0]);
           }
           else
           {
-            if ($this->m_eventss[0]) header("Location: ".$this->m_eventss[0]);
+            if ($this->m_projects[0]) header("Location: ".$this->m_projects[0]);
           }
         }
       }
@@ -157,11 +157,11 @@ class hoursPDA extends hours
 
   function addPhaseAndActivity()
   {
-    global $ATK_VARS, $g_events, $g_phase, $g_activity, $g_sessionManager;
+    global $ATK_VARS, $g_project, $g_phase, $g_activity, $g_sessionManager;
 
     if (($ATK_VARS["atkaction"]=="add" || $ATK_VARS["atkaction"]=="edit" || $ATK_VARS["atkaction"]=="admin"))
-    $this->_addSpecialListAttribute("events","g_events", AF_OBLIGATORY);
-    if ($g_events || ($ATK_VARS["atkaction"]!=="add" || $ATK_VARS["atkaction"]!=="edit"))
+    $this->_addSpecialListAttribute("project","g_project", AF_OBLIGATORY);
+    if ($g_project || ($ATK_VARS["atkaction"]!=="add" || $ATK_VARS["atkaction"]!=="edit"))
     $this->_addSpecialListAttribute("phaseid","g_phase", AF_OBLIGATORY);
     if ($g_phase || ($ATK_VARS["atkaction"]!=="add" || $ATK_VARS["atkaction"]!=="edit"))
     $this->_addSpecialListAttribute("activityid","g_activity", AF_OBLIGATORY);
@@ -206,7 +206,7 @@ class hoursPDA extends hours
     parent::preAdd($record);
 
     $url = $record['activityid'];
-    $this->_urlToDb($record, "events", "g_events");
+    $this->_urlToDb($record, "project", "g_project");
     $this->_urlToDb($record, "phaseid", "g_phase");
     $this->_urlToDb($record, "activityid", "g_activity");
 
@@ -228,10 +228,10 @@ class hoursPDA extends hours
   function edit_values($record)
   {
     parent::edit_values($record);
-    global $ATK_VARS, $g_events, $g_phase, $g_activity, $g_sessionManager;
+    global $ATK_VARS, $g_project, $g_phase, $g_activity, $g_sessionManager;
 
-    if (!$record['events']) $events = $g_sessionManager->stackVar("g_events");
-    else $events = $record['events'];
+    if (!$record['project']) $project = $g_sessionManager->stackVar("g_project");
+    else $project = $record['project'];
 
     if (!$record['phaseid']) $phase = $g_sessionManager->stackVar("g_phase");
     else $phase = $record['phaseid'];
@@ -244,7 +244,7 @@ class hoursPDA extends hours
 
     if ($ATK_VARS["atkaction"] == "edit" && $atknodetype=="timereg.hourspda")
     {
-      if (!$g_events && $events)
+      if (!$g_project && $project)
       {
         if (!$g_phase && $phase)
         {
@@ -262,7 +262,7 @@ class hoursPDA extends hours
       }
       else
       {
-        $url = $this->addVarToCurrentURL(array("g_events"=>$events));
+        $url = $this->addVarToCurrentURL(array("g_project"=>$project));
         header("Location: $url");exit;
       }
     }

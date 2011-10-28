@@ -100,8 +100,8 @@ DEFINE("CYRILLIC_FROM_WINDOWS",false);
 // and resulting in just erraneous conversions
 // for not-cyrillic language based people.
 //
-// Example: In the free events management
-// software dotevents.net $locale_char_set is dynamically
+// Example: In the free project management
+// software dotproject.net $locale_char_set is dynamically
 // set by the language environment the user has chosen.
 //
 // Usage: DEFINE('LANGUAGE_CHARSET', $locale_char_set);

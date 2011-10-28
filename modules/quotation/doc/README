@@ -58,8 +58,8 @@ these statusses is removed from the list.
   are about to expire. See the doc/INSTALL file for instructions on how to 
   install this script using cron.
   
-3.3 Deactivate the "automatically add events" function
+3.3 Deactivate the "automatically add project" function
 
-  Default when accepting a quotation the events add screen apears with the 
-  title of the quotation as eventsname. This can be deactivated by inserting 
-  the following line in config.inc.php: $config_quotation_addevents = false; 
+  Default when accepting a quotation the project add screen apears with the 
+  title of the quotation as projectname. This can be deactivated by inserting 
+  the following line in config.inc.php: $config_quotation_addproject = false; 

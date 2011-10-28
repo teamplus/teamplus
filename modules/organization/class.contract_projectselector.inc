@@ -1,15 +1,15 @@
 <?php
-	include_once(moduleDir("events")."class.events.inc"); // include original baseclass.
+	include_once(moduleDir("project")."class.project.inc"); // include original baseclass.
   
-  class contract_eventsselector extends events
+  class contract_projectselector extends project
   {
-    function contract_eventsselector($name="contract_eventsselector", $flags=0)
+    function contract_projectselector($name="contract_projectselector", $flags=0)
     {
-      $this->events($name,$flags);
+      $this->project($name,$flags);
       //$this->m_filters = array();		//clear parent filters
       
-      //only show eventss that are not linked to a contract yet
-      $this->addFilter("(events.contract_id IS NULL OR events.contract_id = '')");            
+      //only show projects that are not linked to a contract yet
+      $this->addFilter("(project.contract_id IS NULL OR project.contract_id = '')");            
       $this->setSecurityAlias("organization.contracts");
     }
   }

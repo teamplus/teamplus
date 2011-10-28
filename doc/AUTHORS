@@ -36,9 +36,9 @@ development of new features.
   hoursurvey improvements.
 
 * S&W Consultancy BV, Netherlands (http://www.s-w.nl) sponsored the following
-  enhancements: contactpersons per events, userinterface improvements,
+  enhancements: contactpersons per project, userinterface improvements,
   improvements to the extended search feature, and several additional fields
-  for customers and eventss.
+  for customers and projects.
 
 * Lilleborg AG, Norway (http://www.lilleborg.no) sponsored some parts of
   the billing feature.
@@ -151,7 +151,7 @@ Swedish         : Thomas Karlsson      <thomas.karlsson at relea.se>
 Major Contributors
 ------------------
 We like to thank the following people especially, since they made
-significant contributions to the Achievo events.
+significant contributions to the Achievo project.
 
 Stefan Niederhauser <sn at atelier-w.ch>
 

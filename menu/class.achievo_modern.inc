@@ -126,28 +126,28 @@ class achievo_modern extends atkPlainMenu
   function getHeader($atkmenutop)
   {
     $prj='';
-    if ($atkmenutop == "eventsmanagement")
+    if ($atkmenutop == "projectmanagement")
     {
       $sessionManager = &atkGetSessionManager();
       include_once "achievotools.inc";
-      $eventss = $sessionManager->getValue("selectedprj","globals");
+      $projects = $sessionManager->getValue("selectedprj","globals");
 
-      if (count($eventss) == 0)
+      if (count($projects) == 0)
       {
         //updateSelectedProjects();
-        $eventss = $sessionManager->getValue("selectedprj","globals");
+        $projects = $sessionManager->getValue("selectedprj","globals");
       }
 
-      $prj  = sprintf('<span class="achievoeventsselector">%s</span>:', atktext("events_select"));
-      $prj .="<FORM style=\"margin: 0px;\"><SELECT style=\"width: 150px\" name=\"selectedevents\" onchange=\"reloadProjects(this);\">";
-      $prj .= "<OPTION value=\"0\">".atktext("events_select_none")."</OPTION>";
+      $prj  = sprintf('<span class="achievoprojectselector">%s</span>:', atktext("project_select"));
+      $prj .="<FORM style=\"margin: 0px;\"><SELECT style=\"width: 150px\" name=\"selectedproject\" onchange=\"reloadProjects(this);\">";
+      $prj .= "<OPTION value=\"0\">".atktext("project_select_none")."</OPTION>";
 
-      $selectedevents = array_key_exists("selectedevents", $_REQUEST) ? $_REQUEST["selectedevents"] : null;
-      for ($i=0;$i < count($eventss); $i++)
+      $selectedproject = array_key_exists("selectedproject", $_REQUEST) ? $_REQUEST["selectedproject"] : null;
+      for ($i=0;$i < count($projects); $i++)
       {
-        $prj .= "<OPTION value=\"".$eventss[$i]['eventsid']."\"";
-        if ($selectedevents == $eventss[$i]['eventsid']) $prj .=" selected";
-        $prj .= ">".$eventss[$i]['eventsname']."</OPTION>";
+        $prj .= "<OPTION value=\"".$projects[$i]['projectid']."\"";
+        if ($selectedproject == $projects[$i]['projectid']) $prj .=" selected";
+        $prj .= ">".$projects[$i]['projectname']."</OPTION>";
       }
       $prj .="</SELECT></FORM>";
     }
